@@ -1,0 +1,12 @@
+schema: "classroom50/repo-config/v1"
+classroom: "ds212"
+assignment: "portfolio"
+owner:
+  username: "Andy07613"
+  id: 229526554
+  accepted_at: "2026-09-11T01:10:45Z"
+source:
+  owner: "mac-ds212-f26"
+  owner_id: 323652586
+  repo: "portfolio-template"
+  branch: "main"
