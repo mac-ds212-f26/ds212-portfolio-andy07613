@@ -363,10 +363,10 @@ cookieconsent.run({
 <span id="cb4-5"><a href="#cb4-5"></a></span>
 <span id="cb4-6"><a href="#cb4-6"></a>cafe <span class="sc">%&gt;%</span></span>
 <span id="cb4-7"><a href="#cb4-7"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> top_countries) <span class="sc">%&gt;%</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> country, <span class="at">y =</span> price_gbp)) <span class="sc">+</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(country, price_gbp, <span class="at">.fun =</span> median), <span class="at">y =</span> price_gbp)) <span class="sc">+</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"lightgray"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
 <span id="cb4-10"><a href="#cb4-10"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Country"</span>, <span class="at">y =</span> <span class="st">"Cappuccino Price (GBP)"</span>, <span class="at">title =</span> <span class="st">"Cappuccino Price Variation Within Countries"</span>) <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Cappuccino Prices Vary Within Countries"</span>, <span class="at">subtitle =</span> <span class="st">"Among the 8 most-observed countries, prices are highest and most variable in the U.S. and U.K."</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Price of a Small Cappuccino (GBP)"</span>, <span class="at">caption =</span> <span class="st">"By Andy Zhu | Created on 2026-09-16 | Data source: TidyTuesday Cappuccino Index"</span>) <span class="sc">+</span></span>
 <span id="cb4-12"><a href="#cb4-12"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
@@ -1071,10 +1071,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb5-69"><a href="#cb5-69"></a></span>
 <span id="cb5-70"><a href="#cb5-70"></a>cafe <span class="sc">%&gt;%</span></span>
 <span id="cb5-71"><a href="#cb5-71"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> top_countries) <span class="sc">%&gt;%</span></span>
-<span id="cb5-72"><a href="#cb5-72"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> country, <span class="at">y =</span> price_gbp)) <span class="sc">+</span></span>
-<span id="cb5-73"><a href="#cb5-73"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb5-72"><a href="#cb5-72"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(country, price_gbp, <span class="at">.fun =</span> median), <span class="at">y =</span> price_gbp)) <span class="sc">+</span></span>
+<span id="cb5-73"><a href="#cb5-73"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"lightgray"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
 <span id="cb5-74"><a href="#cb5-74"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb5-75"><a href="#cb5-75"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Country"</span>, <span class="at">y =</span> <span class="st">"Cappuccino Price (GBP)"</span>, <span class="at">title =</span> <span class="st">"Cappuccino Price Variation Within Countries"</span>) <span class="sc">+</span></span>
+<span id="cb5-75"><a href="#cb5-75"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Cappuccino Prices Vary Within Countries"</span>, <span class="at">subtitle =</span> <span class="st">"Among the 8 most-observed countries, prices are highest and most variable in the U.S. and U.K."</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Price of a Small Cappuccino (GBP)"</span>, <span class="at">caption =</span> <span class="st">"By Andy Zhu | Created on 2026-09-16 | Data source: TidyTuesday Cappuccino Index"</span>) <span class="sc">+</span></span>
 <span id="cb5-76"><a href="#cb5-76"></a>  <span class="fu">theme_classic</span>()</span>
 <span id="cb5-77"><a href="#cb5-77"></a><span class="in">```</span></span>
 <span id="cb5-78"><a href="#cb5-78"></a>  In some countries, the price of a cappuccino varies significantly, meaning that cafes within the same country do not necessarily charge similar prices. For instance, the US and the UK show a wide price range with several outliers, whereas prices in other countries are relatively clustered. Such disparities indicate that a national average price can mask significant variations among individual cafes within the same country.</span>
