@@ -247,6 +247,11 @@ cookieconsent.run({
   <a href="../ica/03-adv-ggplot-notes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">3 Adv Data Viz</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ica/04_adv_maps/code/04-adv-maps-1-notes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">4 Adv Spatial Viz</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -356,40 +361,60 @@ cookieconsent.run({
 </div>
 <p>Cappuccino prices and barista wages show a positive association: cafes in places with higher barista wages also tend to charge more for cappuccinos. However, the points are widely dispersed around the fitted line, indicating that wage alone does not determine cappuccino prices. This helps explain why affordability cannot be understood from price alone—the relationship between the price of a cappuccino and the wages earned by baristas is what matters.</p>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>top_countries <span class="ot">&lt;-</span> cafe <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">count</span>(country, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">8</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a>  <span class="fu">pull</span>(country)</span>
-<span id="cb4-5"><a href="#cb4-5"></a></span>
-<span id="cb4-6"><a href="#cb4-6"></a>plot_data <span class="ot">&lt;-</span> cafe <span class="sc">%&gt;%</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> top_countries)</span>
-<span id="cb4-8"><a href="#cb4-8"></a></span>
-<span id="cb4-9"><a href="#cb4-9"></a>usa_outlier <span class="ot">&lt;-</span> plot_data <span class="sc">%&gt;%</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a>  <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"USA"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a>  <span class="fu">slice_max</span>(price_gbp, <span class="at">n =</span> <span class="dv">1</span>)</span>
-<span id="cb4-12"><a href="#cb4-12"></a></span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="fu">ggplot</span>(plot_data,</span>
-<span id="cb4-14"><a href="#cb4-14"></a>       <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(country, price_gbp, <span class="at">.fun =</span> median),</span>
-<span id="cb4-15"><a href="#cb4-15"></a>           <span class="at">y =</span> price_gbp)) <span class="sc">+</span></span>
-<span id="cb4-16"><a href="#cb4-16"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"lightgray"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb4-17"><a href="#cb4-17"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb4-18"><a href="#cb4-18"></a>    <span class="at">data =</span> usa_outlier,</span>
-<span id="cb4-19"><a href="#cb4-19"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="st">"US outlier"</span>),</span>
-<span id="cb4-20"><a href="#cb4-20"></a>    <span class="at">hjust =</span> <span class="fl">1.2</span>,</span>
-<span id="cb4-21"><a href="#cb4-21"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
-<span id="cb4-22"><a href="#cb4-22"></a>    <span class="at">color =</span> <span class="st">"black"</span></span>
-<span id="cb4-23"><a href="#cb4-23"></a>  ) <span class="sc">+</span></span>
-<span id="cb4-24"><a href="#cb4-24"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb4-25"><a href="#cb4-25"></a>  <span class="fu">labs</span>(</span>
-<span id="cb4-26"><a href="#cb4-26"></a>    <span class="at">title =</span> <span class="st">"Distribution of Small Cappuccino Prices in Selected Countries"</span>,</span>
-<span id="cb4-27"><a href="#cb4-27"></a>    <span class="at">subtitle =</span> <span class="st">"Among the eight countries with the most café observations,</span><span class="sc">\n</span><span class="st"> cappuccino prices are generally highest and most variable in the US and the UK."</span>,</span>
-<span id="cb4-28"><a href="#cb4-28"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb4-29"><a href="#cb4-29"></a>    <span class="at">y =</span> <span class="st">"Price of a Small Cappuccino (£)"</span>,</span>
-<span id="cb4-30"><a href="#cb4-30"></a>    <span class="at">caption =</span> <span class="st">"Source: Cappuccino Index via TidyTuesday (2026-09-08).</span><span class="sc">\n</span><span class="st">* Countries shown are the eight countries with the most café observations. Graphic by Andy Zhu, created 2026-09-16."</span>) <span class="sc">+</span></span>
-<span id="cb4-31"><a href="#cb4-31"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
-<span id="cb4-32"><a href="#cb4-32"></a>  <span class="fu">theme</span>(</span>
-<span id="cb4-33"><a href="#cb4-33"></a>    <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="fl">5.5</span>, <span class="dv">30</span>, <span class="fl">5.5</span>, <span class="fl">5.5</span>)</span>
-<span id="cb4-34"><a href="#cb4-34"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>country_counts <span class="ot">&lt;-</span> cafe <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">count</span>(country, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a>top_countries <span class="ot">&lt;-</span> country_counts <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">8</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>  <span class="fu">pull</span>(country)</span>
+<span id="cb4-7"><a href="#cb4-7"></a></span>
+<span id="cb4-8"><a href="#cb4-8"></a>plot_data <span class="ot">&lt;-</span> cafe <span class="sc">%&gt;%</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> top_countries)</span>
+<span id="cb4-10"><a href="#cb4-10"></a></span>
+<span id="cb4-11"><a href="#cb4-11"></a>usa_outlier <span class="ot">&lt;-</span> plot_data <span class="sc">%&gt;%</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>  <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"USA"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a>  <span class="fu">slice_max</span>(price_gbp, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb4-14"><a href="#cb4-14"></a></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="fu">ggplot</span>(</span>
+<span id="cb4-16"><a href="#cb4-16"></a>  plot_data,</span>
+<span id="cb4-17"><a href="#cb4-17"></a>  <span class="fu">aes</span>(</span>
+<span id="cb4-18"><a href="#cb4-18"></a>    <span class="at">x =</span> <span class="fu">fct_reorder</span>(country, price_gbp, <span class="at">.fun =</span> median),</span>
+<span id="cb4-19"><a href="#cb4-19"></a>    <span class="at">y =</span> price_gbp</span>
+<span id="cb4-20"><a href="#cb4-20"></a>  )</span>
+<span id="cb4-21"><a href="#cb4-21"></a>) <span class="sc">+</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a>  <span class="fu">geom_boxplot</span>(</span>
+<span id="cb4-23"><a href="#cb4-23"></a>    <span class="at">fill =</span> <span class="st">"lightgray"</span>,</span>
+<span id="cb4-24"><a href="#cb4-24"></a>    <span class="at">color =</span> <span class="st">"black"</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a></span>
+<span id="cb4-27"><a href="#cb4-27"></a>  <span class="co"># Label the unusual U.S. observation by city</span></span>
+<span id="cb4-28"><a href="#cb4-28"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb4-29"><a href="#cb4-29"></a>    <span class="at">data =</span> usa_outlier,</span>
+<span id="cb4-30"><a href="#cb4-30"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(city, <span class="st">" (£"</span>, price_gbp, <span class="st">")"</span>)),</span>
+<span id="cb4-31"><a href="#cb4-31"></a>    <span class="at">hjust =</span> <span class="fl">1.1</span>,</span>
+<span id="cb4-32"><a href="#cb4-32"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb4-33"><a href="#cb4-33"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-34"><a href="#cb4-34"></a></span>
+<span id="cb4-35"><a href="#cb4-35"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb4-36"><a href="#cb4-36"></a></span>
+<span id="cb4-37"><a href="#cb4-37"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-38"><a href="#cb4-38"></a>    <span class="at">title =</span> <span class="st">"Distribution of Small Cappuccino Prices in Selected Countries*"</span>,</span>
+<span id="cb4-39"><a href="#cb4-39"></a></span>
+<span id="cb4-40"><a href="#cb4-40"></a>    <span class="at">subtitle =</span> <span class="st">"Among the selected countries, </span><span class="sc">\n</span><span class="st"> the U.S. and U.K. have the highest median prices and the widest price distributions."</span>,</span>
+<span id="cb4-41"><a href="#cb4-41"></a></span>
+<span id="cb4-42"><a href="#cb4-42"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb4-43"><a href="#cb4-43"></a></span>
+<span id="cb4-44"><a href="#cb4-44"></a>    <span class="at">y =</span> <span class="st">"Price of a Small Cappuccino (British Pounds GBP)"</span>,</span>
+<span id="cb4-45"><a href="#cb4-45"></a></span>
+<span id="cb4-46"><a href="#cb4-46"></a>    <span class="at">caption =</span> <span class="st">"Graphic by Andy Zhu | Source: The Cappuccino Index via TidyTuesday (2026-09-08).</span></span>
+<span id="cb4-47"><a href="#cb4-47"></a><span class="st">* Selected countries each have at least 67 café observations (the eight largest country samples)."</span></span>
+<span id="cb4-48"><a href="#cb4-48"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-49"><a href="#cb4-49"></a></span>
+<span id="cb4-50"><a href="#cb4-50"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb4-51"><a href="#cb4-51"></a></span>
+<span id="cb4-52"><a href="#cb4-52"></a>  <span class="fu">theme</span>(</span>
+<span id="cb4-53"><a href="#cb4-53"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>)</span>
+<span id="cb4-54"><a href="#cb4-54"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="hw01-tt_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1086,45 +1111,65 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb5-60"><a href="#cb5-60"></a></span>
 <span id="cb5-61"><a href="#cb5-61"></a></span>
 <span id="cb5-64"><a href="#cb5-64"></a><span class="in">```{r}</span></span>
-<span id="cb5-65"><a href="#cb5-65"></a>top_countries <span class="ot">&lt;-</span> cafe <span class="sc">%&gt;%</span></span>
-<span id="cb5-66"><a href="#cb5-66"></a>  <span class="fu">count</span>(country, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-67"><a href="#cb5-67"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">8</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-68"><a href="#cb5-68"></a>  <span class="fu">pull</span>(country)</span>
-<span id="cb5-69"><a href="#cb5-69"></a></span>
-<span id="cb5-70"><a href="#cb5-70"></a>plot_data <span class="ot">&lt;-</span> cafe <span class="sc">%&gt;%</span></span>
-<span id="cb5-71"><a href="#cb5-71"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> top_countries)</span>
-<span id="cb5-72"><a href="#cb5-72"></a></span>
-<span id="cb5-73"><a href="#cb5-73"></a>usa_outlier <span class="ot">&lt;-</span> plot_data <span class="sc">%&gt;%</span></span>
-<span id="cb5-74"><a href="#cb5-74"></a>  <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"USA"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-75"><a href="#cb5-75"></a>  <span class="fu">slice_max</span>(price_gbp, <span class="at">n =</span> <span class="dv">1</span>)</span>
-<span id="cb5-76"><a href="#cb5-76"></a></span>
-<span id="cb5-77"><a href="#cb5-77"></a><span class="fu">ggplot</span>(plot_data,</span>
-<span id="cb5-78"><a href="#cb5-78"></a>       <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(country, price_gbp, <span class="at">.fun =</span> median),</span>
-<span id="cb5-79"><a href="#cb5-79"></a>           <span class="at">y =</span> price_gbp)) <span class="sc">+</span></span>
-<span id="cb5-80"><a href="#cb5-80"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"lightgray"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb5-81"><a href="#cb5-81"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb5-82"><a href="#cb5-82"></a>    <span class="at">data =</span> usa_outlier,</span>
-<span id="cb5-83"><a href="#cb5-83"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="st">"US outlier"</span>),</span>
-<span id="cb5-84"><a href="#cb5-84"></a>    <span class="at">hjust =</span> <span class="fl">1.2</span>,</span>
-<span id="cb5-85"><a href="#cb5-85"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
-<span id="cb5-86"><a href="#cb5-86"></a>    <span class="at">color =</span> <span class="st">"black"</span></span>
-<span id="cb5-87"><a href="#cb5-87"></a>  ) <span class="sc">+</span></span>
-<span id="cb5-88"><a href="#cb5-88"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb5-89"><a href="#cb5-89"></a>  <span class="fu">labs</span>(</span>
-<span id="cb5-90"><a href="#cb5-90"></a>    <span class="at">title =</span> <span class="st">"Distribution of Small Cappuccino Prices in Selected Countries"</span>,</span>
-<span id="cb5-91"><a href="#cb5-91"></a>    <span class="at">subtitle =</span> <span class="st">"Among the eight countries with the most café observations,</span><span class="sc">\n</span><span class="st"> cappuccino prices are generally highest and most variable in the US and the UK."</span>,</span>
-<span id="cb5-92"><a href="#cb5-92"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb5-93"><a href="#cb5-93"></a>    <span class="at">y =</span> <span class="st">"Price of a Small Cappuccino (£)"</span>,</span>
-<span id="cb5-94"><a href="#cb5-94"></a>    <span class="at">caption =</span> <span class="st">"Source: Cappuccino Index via TidyTuesday (2026-09-08).</span><span class="sc">\n</span><span class="st">* Countries shown are the eight countries with the most café observations. Graphic by Andy Zhu, created 2026-09-16."</span>) <span class="sc">+</span></span>
-<span id="cb5-95"><a href="#cb5-95"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
-<span id="cb5-96"><a href="#cb5-96"></a>  <span class="fu">theme</span>(</span>
-<span id="cb5-97"><a href="#cb5-97"></a>    <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="fl">5.5</span>, <span class="dv">30</span>, <span class="fl">5.5</span>, <span class="fl">5.5</span>)</span>
-<span id="cb5-98"><a href="#cb5-98"></a>  )</span>
-<span id="cb5-99"><a href="#cb5-99"></a><span class="in">```</span></span>
-<span id="cb5-100"><a href="#cb5-100"></a>  In some countries, the price of a cappuccino varies significantly, meaning that cafes within the same country do not necessarily charge similar prices. For instance, the US and the UK show a wide price range with several outliers, whereas prices in other countries are relatively clustered. Such disparities indicate that a national average price can mask significant variations among individual cafes within the same country.</span>
-<span id="cb5-101"><a href="#cb5-101"></a></span>
-<span id="cb5-102"><a href="#cb5-102"></a>  Countries differ a great deal in terms of cappuccino affordability. The Cappuccino Index expresses how long a barista would have to work to buy the same kind of cappuccino as is sold in bars in different countries.For example, a barista in Australia would need to work only about 10 minutes to afford a small cappuccino, while a barista in Pakistan would need to work about 277 minutes. This shows that the purchasing power of baristas differs substantially across countries. The relationship between wages and cappuccino prices helps explain part of this variation: higher-wage locations also tend to have higher coffee prices. But the relationship is not direct or even roughly equal in different locations, so higher wages do not necessarily translate directly into greater affordability. In addition, cappuccino prices vary within countries, suggesting that national averages can hide meaningful differences among individual cafes. So the Index expresses affordability, which depends on balance between baristas’ wages and the prices of cappuccinos.</span>
-<span id="cb5-103"><a href="#cb5-103"></a>  These results should be interpreted with caution. The number of cafes included in the sample for each country varies, and some countries have relatively small samples. Furthermore, the data only includes those cafes that have been observed, also does not take into account a number of factors which could influence purchasing power, such as tips and taxes, as well as general differences in cost of living between countries and cities.</span>
+<span id="cb5-65"><a href="#cb5-65"></a>country_counts <span class="ot">&lt;-</span> cafe <span class="sc">%&gt;%</span></span>
+<span id="cb5-66"><a href="#cb5-66"></a>  <span class="fu">count</span>(country, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-67"><a href="#cb5-67"></a></span>
+<span id="cb5-68"><a href="#cb5-68"></a>top_countries <span class="ot">&lt;-</span> country_counts <span class="sc">%&gt;%</span></span>
+<span id="cb5-69"><a href="#cb5-69"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">8</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-70"><a href="#cb5-70"></a>  <span class="fu">pull</span>(country)</span>
+<span id="cb5-71"><a href="#cb5-71"></a></span>
+<span id="cb5-72"><a href="#cb5-72"></a>plot_data <span class="ot">&lt;-</span> cafe <span class="sc">%&gt;%</span></span>
+<span id="cb5-73"><a href="#cb5-73"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> top_countries)</span>
+<span id="cb5-74"><a href="#cb5-74"></a></span>
+<span id="cb5-75"><a href="#cb5-75"></a>usa_outlier <span class="ot">&lt;-</span> plot_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-76"><a href="#cb5-76"></a>  <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"USA"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-77"><a href="#cb5-77"></a>  <span class="fu">slice_max</span>(price_gbp, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb5-78"><a href="#cb5-78"></a></span>
+<span id="cb5-79"><a href="#cb5-79"></a><span class="fu">ggplot</span>(</span>
+<span id="cb5-80"><a href="#cb5-80"></a>  plot_data,</span>
+<span id="cb5-81"><a href="#cb5-81"></a>  <span class="fu">aes</span>(</span>
+<span id="cb5-82"><a href="#cb5-82"></a>    <span class="at">x =</span> <span class="fu">fct_reorder</span>(country, price_gbp, <span class="at">.fun =</span> median),</span>
+<span id="cb5-83"><a href="#cb5-83"></a>    <span class="at">y =</span> price_gbp</span>
+<span id="cb5-84"><a href="#cb5-84"></a>  )</span>
+<span id="cb5-85"><a href="#cb5-85"></a>) <span class="sc">+</span></span>
+<span id="cb5-86"><a href="#cb5-86"></a>  <span class="fu">geom_boxplot</span>(</span>
+<span id="cb5-87"><a href="#cb5-87"></a>    <span class="at">fill =</span> <span class="st">"lightgray"</span>,</span>
+<span id="cb5-88"><a href="#cb5-88"></a>    <span class="at">color =</span> <span class="st">"black"</span></span>
+<span id="cb5-89"><a href="#cb5-89"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-90"><a href="#cb5-90"></a></span>
+<span id="cb5-91"><a href="#cb5-91"></a>  <span class="co"># Label the unusual U.S. observation by city</span></span>
+<span id="cb5-92"><a href="#cb5-92"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb5-93"><a href="#cb5-93"></a>    <span class="at">data =</span> usa_outlier,</span>
+<span id="cb5-94"><a href="#cb5-94"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(city, <span class="st">" (£"</span>, price_gbp, <span class="st">")"</span>)),</span>
+<span id="cb5-95"><a href="#cb5-95"></a>    <span class="at">hjust =</span> <span class="fl">1.1</span>,</span>
+<span id="cb5-96"><a href="#cb5-96"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb5-97"><a href="#cb5-97"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-98"><a href="#cb5-98"></a></span>
+<span id="cb5-99"><a href="#cb5-99"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb5-100"><a href="#cb5-100"></a></span>
+<span id="cb5-101"><a href="#cb5-101"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-102"><a href="#cb5-102"></a>    <span class="at">title =</span> <span class="st">"Distribution of Small Cappuccino Prices in Selected Countries*"</span>,</span>
+<span id="cb5-103"><a href="#cb5-103"></a></span>
+<span id="cb5-104"><a href="#cb5-104"></a>    <span class="at">subtitle =</span> <span class="st">"Among the selected countries, </span><span class="sc">\n</span><span class="st"> the U.S. and U.K. have the highest median prices and the widest price distributions."</span>,</span>
+<span id="cb5-105"><a href="#cb5-105"></a></span>
+<span id="cb5-106"><a href="#cb5-106"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb5-107"><a href="#cb5-107"></a></span>
+<span id="cb5-108"><a href="#cb5-108"></a>    <span class="at">y =</span> <span class="st">"Price of a Small Cappuccino (British Pounds GBP)"</span>,</span>
+<span id="cb5-109"><a href="#cb5-109"></a></span>
+<span id="cb5-110"><a href="#cb5-110"></a>    <span class="at">caption =</span> <span class="st">"Graphic by Andy Zhu | Source: The Cappuccino Index via TidyTuesday (2026-09-08).</span></span>
+<span id="cb5-111"><a href="#cb5-111"></a><span class="st">* Selected countries each have at least 67 café observations (the eight largest country samples)."</span></span>
+<span id="cb5-112"><a href="#cb5-112"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-113"><a href="#cb5-113"></a></span>
+<span id="cb5-114"><a href="#cb5-114"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb5-115"><a href="#cb5-115"></a></span>
+<span id="cb5-116"><a href="#cb5-116"></a>  <span class="fu">theme</span>(</span>
+<span id="cb5-117"><a href="#cb5-117"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>)</span>
+<span id="cb5-118"><a href="#cb5-118"></a>  )</span>
+<span id="cb5-119"><a href="#cb5-119"></a><span class="in">```</span></span>
+<span id="cb5-120"><a href="#cb5-120"></a>  In some countries, the price of a cappuccino varies significantly, meaning that cafes within the same country do not necessarily charge similar prices. For instance, the US and the UK show a wide price range with several outliers, whereas prices in other countries are relatively clustered. Such disparities indicate that a national average price can mask significant variations among individual cafes within the same country.</span>
+<span id="cb5-121"><a href="#cb5-121"></a></span>
+<span id="cb5-122"><a href="#cb5-122"></a>  Countries differ a great deal in terms of cappuccino affordability. The Cappuccino Index expresses how long a barista would have to work to buy the same kind of cappuccino as is sold in bars in different countries.For example, a barista in Australia would need to work only about 10 minutes to afford a small cappuccino, while a barista in Pakistan would need to work about 277 minutes. This shows that the purchasing power of baristas differs substantially across countries. The relationship between wages and cappuccino prices helps explain part of this variation: higher-wage locations also tend to have higher coffee prices. But the relationship is not direct or even roughly equal in different locations, so higher wages do not necessarily translate directly into greater affordability. In addition, cappuccino prices vary within countries, suggesting that national averages can hide meaningful differences among individual cafes. So the Index expresses affordability, which depends on balance between baristas’ wages and the prices of cappuccinos.</span>
+<span id="cb5-123"><a href="#cb5-123"></a>  These results should be interpreted with caution. The number of cafes included in the sample for each country varies, and some countries have relatively small samples. Furthermore, the data only includes those cafes that have been observed, also does not take into account a number of factors which could influence purchasing power, such as tips and taxes, as well as general differences in cost of living between countries and cities.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
