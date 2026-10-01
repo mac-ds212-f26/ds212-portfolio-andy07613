@@ -59,6 +59,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../tt/hw03-tt.html" rel="next">
 <link href="../extra/extra-sample2.html" rel="prev">
 <script src="../site_libs/cookie-consent/cookie-consent.js"></script>
 <link href="../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
@@ -282,6 +283,11 @@ cookieconsent.run({
   <a href="../extra/manuscriptextrawork-tt.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Homework 02 Extra</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tt/hw03-tt.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Homework 03</span></a>
+  </div>
+</li>
       </ul>
 </li>
     </ul>
@@ -338,12 +344,44 @@ cookieconsent.run({
 </div>
 </div>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>qumran <span class="sc">%&gt;%</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>qumran_plot <span class="ot">&lt;-</span> qumran <span class="sc">%&gt;%</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">filter</span>(content_category <span class="sc">!=</span> <span class="st">"Unidentified"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(cave), <span class="at">fill =</span> content_category )) <span class="sc">+</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Qumran Cave"</span>, <span class="at">y =</span> <span class="st">"Proportion"</span>, <span class="at">fill =</span> <span class="st">"Content Category"</span>, <span class="at">title =</span> <span class="st">"The Mix of Text Types Differs Across Qumran Caves"</span>) <span class="sc">+</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="at">content_group =</span> <span class="fu">case_when</span>(</span>
+<span id="cb2-5"><a href="#cb2-5"></a>      content_category <span class="sc">%in%</span> <span class="fu">c</span>(</span>
+<span id="cb2-6"><a href="#cb2-6"></a>        <span class="st">"Biblical"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7"></a>        <span class="st">"Biblical (Deuterocanonical)"</span>,</span>
+<span id="cb2-8"><a href="#cb2-8"></a>        <span class="st">"Biblical Translation"</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>      ) <span class="sc">~</span> <span class="st">"Biblical"</span>,</span>
+<span id="cb2-10"><a href="#cb2-10"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> content_category</span>
+<span id="cb2-11"><a href="#cb2-11"></a>    )</span>
+<span id="cb2-12"><a href="#cb2-12"></a>  )</span>
+<span id="cb2-13"><a href="#cb2-13"></a></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="fu">ggplot</span>(</span>
+<span id="cb2-15"><a href="#cb2-15"></a>  qumran_plot,</span>
+<span id="cb2-16"><a href="#cb2-16"></a>  <span class="fu">aes</span>(</span>
+<span id="cb2-17"><a href="#cb2-17"></a>    <span class="at">x =</span> <span class="fu">factor</span>(cave),</span>
+<span id="cb2-18"><a href="#cb2-18"></a>    <span class="at">fill =</span> content_group</span>
+<span id="cb2-19"><a href="#cb2-19"></a>  )</span>
+<span id="cb2-20"><a href="#cb2-20"></a>) <span class="sc">+</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>  <span class="fu">geom_bar</span>(</span>
+<span id="cb2-22"><a href="#cb2-22"></a>    <span class="at">position =</span> <span class="st">"fill"</span>,</span>
+<span id="cb2-23"><a href="#cb2-23"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb2-24"><a href="#cb2-24"></a>    <span class="at">linewidth =</span> <span class="fl">0.4</span></span>
+<span id="cb2-25"><a href="#cb2-25"></a>  ) <span class="sc">+</span></span>
+<span id="cb2-26"><a href="#cb2-26"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb2-27"><a href="#cb2-27"></a>    <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_percent</span>(<span class="at">accuracy =</span> <span class="dv">1</span>),</span>
+<span id="cb2-28"><a href="#cb2-28"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.25</span>)</span>
+<span id="cb2-29"><a href="#cb2-29"></a>  ) <span class="sc">+</span></span>
+<span id="cb2-30"><a href="#cb2-30"></a>  <span class="fu">labs</span>(</span>
+<span id="cb2-31"><a href="#cb2-31"></a>    <span class="at">title =</span> <span class="st">"Composition of Manuscript Text Types Across Qumran Caves"</span>,</span>
+<span id="cb2-32"><a href="#cb2-32"></a>    <span class="at">subtitle =</span> <span class="st">"Among identified manuscripts, text composition differs substantially across caves,</span><span class="sc">\n</span><span class="st">with Cave 7 dominated by parabiblical texts and Cave 8 by liturgical texts."</span>,</span>
+<span id="cb2-33"><a href="#cb2-33"></a>    <span class="at">x =</span> <span class="st">"Qumran Cave Number"</span>,</span>
+<span id="cb2-34"><a href="#cb2-34"></a>    <span class="at">y =</span> <span class="st">"Percent of Identified Manuscripts"</span>,</span>
+<span id="cb2-35"><a href="#cb2-35"></a>    <span class="at">fill =</span> <span class="st">"Content Category"</span>,</span>
+<span id="cb2-36"><a href="#cb2-36"></a>    <span class="at">caption =</span> <span class="st">"Graphic by Andy Zhu | Source: Dead Sea Scrolls Manuscripts via TidyTuesday (2026-09-15)."</span></span>
+<span id="cb2-37"><a href="#cb2-37"></a>  ) <span class="sc">+</span></span>
+<span id="cb2-38"><a href="#cb2-38"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="manuscriptextrawork-tt_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
@@ -992,6 +1030,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../tt/hw03-tt.html" class="pagination-link" aria-label="Homework 03">
+        <span class="nav-page-text"><span class="chapter-title">Homework 03</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb4" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">---</span></span>
@@ -1024,26 +1065,58 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb4-30"><a href="#cb4-30"></a>  <span class="fu">theme_classic</span>()</span>
 <span id="cb4-31"><a href="#cb4-31"></a><span class="in">```</span></span>
 <span id="cb4-34"><a href="#cb4-34"></a><span class="in">```{r}</span></span>
-<span id="cb4-35"><a href="#cb4-35"></a>qumran <span class="sc">%&gt;%</span></span>
+<span id="cb4-35"><a href="#cb4-35"></a>qumran_plot <span class="ot">&lt;-</span> qumran <span class="sc">%&gt;%</span></span>
 <span id="cb4-36"><a href="#cb4-36"></a>  <span class="fu">filter</span>(content_category <span class="sc">!=</span> <span class="st">"Unidentified"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-37"><a href="#cb4-37"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(cave), <span class="at">fill =</span> content_category )) <span class="sc">+</span></span>
-<span id="cb4-38"><a href="#cb4-38"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
-<span id="cb4-39"><a href="#cb4-39"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Qumran Cave"</span>, <span class="at">y =</span> <span class="st">"Proportion"</span>, <span class="at">fill =</span> <span class="st">"Content Category"</span>, <span class="at">title =</span> <span class="st">"The Mix of Text Types Differs Across Qumran Caves"</span>) <span class="sc">+</span></span>
-<span id="cb4-40"><a href="#cb4-40"></a>  <span class="fu">theme_classic</span>()</span>
-<span id="cb4-41"><a href="#cb4-41"></a><span class="in">```</span></span>
-<span id="cb4-44"><a href="#cb4-44"></a><span class="in">```{r}</span></span>
-<span id="cb4-45"><a href="#cb4-45"></a>qumran <span class="sc">%&gt;%</span></span>
-<span id="cb4-46"><a href="#cb4-46"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(language)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-47"><a href="#cb4-47"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(cave), <span class="at">fill =</span> language)) <span class="sc">+</span></span>
-<span id="cb4-48"><a href="#cb4-48"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
-<span id="cb4-49"><a href="#cb4-49"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Qumran Cave"</span>, <span class="at">y =</span> <span class="st">"Proportion"</span>, <span class="at">fill =</span> <span class="st">"Language"</span>, <span class="at">title =</span> <span class="st">"Language Composition Across Qumran Caves"</span>) <span class="sc">+</span></span>
-<span id="cb4-50"><a href="#cb4-50"></a>  <span class="fu">theme_classic</span>()</span>
-<span id="cb4-51"><a href="#cb4-51"></a><span class="in">```</span></span>
-<span id="cb4-52"><a href="#cb4-52"></a>  </span>
-<span id="cb4-53"><a href="#cb4-53"></a>  The distribution of manuscripts across the various Qumran caves is uneven. Cave 4 contains a significantly larger number of manuscripts—541 in total—whereas the other caves hold far fewer. Treating all caves as equally representative would therefore introduce bias, masking the reality of this numerical imbalance.</span>
-<span id="cb4-54"><a href="#cb4-54"></a>  The types of manuscripts found in each cave also vary; some caves contain a high proportion of biblical texts, while others are dominated by non-biblical, liturgical, or para-biblical writings. Clearly, the differences between the caves extend beyond mere quantity.</span>
-<span id="cb4-55"><a href="#cb4-55"></a>  Linguistically, the manuscripts across the caves are largely similar. Hebrew predominates in most caves, indicating its status as the lingua franca of the time. However, the manuscripts from Cave 7 are exclusively in Greek, setting them apart entirely from those found elsewhere; this demonstrates that the linguistic profile of the manuscripts is not uniform across all locations.</span>
-<span id="cb4-56"><a href="#cb4-56"></a>  In summary, the differences among these cave manuscripts go beyond quantity. While Cave 4 holds the vast majority of the texts, the other caves exhibit distinct variations in language and content type. Nevertheless, we must exercise caution when drawing conclusions, as current analyses rely on extant manuscripts that have already been excavated and classified. Since the number of surviving manuscripts from most caves is very small, it is impossible to definitively infer the overall content or original purpose of the manuscript collections as a whole.</span>
+<span id="cb4-37"><a href="#cb4-37"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-38"><a href="#cb4-38"></a>    <span class="at">content_group =</span> <span class="fu">case_when</span>(</span>
+<span id="cb4-39"><a href="#cb4-39"></a>      content_category <span class="sc">%in%</span> <span class="fu">c</span>(</span>
+<span id="cb4-40"><a href="#cb4-40"></a>        <span class="st">"Biblical"</span>,</span>
+<span id="cb4-41"><a href="#cb4-41"></a>        <span class="st">"Biblical (Deuterocanonical)"</span>,</span>
+<span id="cb4-42"><a href="#cb4-42"></a>        <span class="st">"Biblical Translation"</span></span>
+<span id="cb4-43"><a href="#cb4-43"></a>      ) <span class="sc">~</span> <span class="st">"Biblical"</span>,</span>
+<span id="cb4-44"><a href="#cb4-44"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> content_category</span>
+<span id="cb4-45"><a href="#cb4-45"></a>    )</span>
+<span id="cb4-46"><a href="#cb4-46"></a>  )</span>
+<span id="cb4-47"><a href="#cb4-47"></a></span>
+<span id="cb4-48"><a href="#cb4-48"></a><span class="fu">ggplot</span>(</span>
+<span id="cb4-49"><a href="#cb4-49"></a>  qumran_plot,</span>
+<span id="cb4-50"><a href="#cb4-50"></a>  <span class="fu">aes</span>(</span>
+<span id="cb4-51"><a href="#cb4-51"></a>    <span class="at">x =</span> <span class="fu">factor</span>(cave),</span>
+<span id="cb4-52"><a href="#cb4-52"></a>    <span class="at">fill =</span> content_group</span>
+<span id="cb4-53"><a href="#cb4-53"></a>  )</span>
+<span id="cb4-54"><a href="#cb4-54"></a>) <span class="sc">+</span></span>
+<span id="cb4-55"><a href="#cb4-55"></a>  <span class="fu">geom_bar</span>(</span>
+<span id="cb4-56"><a href="#cb4-56"></a>    <span class="at">position =</span> <span class="st">"fill"</span>,</span>
+<span id="cb4-57"><a href="#cb4-57"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb4-58"><a href="#cb4-58"></a>    <span class="at">linewidth =</span> <span class="fl">0.4</span></span>
+<span id="cb4-59"><a href="#cb4-59"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-60"><a href="#cb4-60"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb4-61"><a href="#cb4-61"></a>    <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_percent</span>(<span class="at">accuracy =</span> <span class="dv">1</span>),</span>
+<span id="cb4-62"><a href="#cb4-62"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.25</span>)</span>
+<span id="cb4-63"><a href="#cb4-63"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-64"><a href="#cb4-64"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-65"><a href="#cb4-65"></a>    <span class="at">title =</span> <span class="st">"Composition of Manuscript Text Types Across Qumran Caves"</span>,</span>
+<span id="cb4-66"><a href="#cb4-66"></a>    <span class="at">subtitle =</span> <span class="st">"Among identified manuscripts, text composition differs substantially across caves,</span><span class="sc">\n</span><span class="st">with Cave 7 dominated by parabiblical texts and Cave 8 by liturgical texts."</span>,</span>
+<span id="cb4-67"><a href="#cb4-67"></a>    <span class="at">x =</span> <span class="st">"Qumran Cave Number"</span>,</span>
+<span id="cb4-68"><a href="#cb4-68"></a>    <span class="at">y =</span> <span class="st">"Percent of Identified Manuscripts"</span>,</span>
+<span id="cb4-69"><a href="#cb4-69"></a>    <span class="at">fill =</span> <span class="st">"Content Category"</span>,</span>
+<span id="cb4-70"><a href="#cb4-70"></a>    <span class="at">caption =</span> <span class="st">"Graphic by Andy Zhu | Source: Dead Sea Scrolls Manuscripts via TidyTuesday (2026-09-15)."</span></span>
+<span id="cb4-71"><a href="#cb4-71"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-72"><a href="#cb4-72"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb4-73"><a href="#cb4-73"></a><span class="in">```</span></span>
+<span id="cb4-76"><a href="#cb4-76"></a><span class="in">```{r}</span></span>
+<span id="cb4-77"><a href="#cb4-77"></a>qumran <span class="sc">%&gt;%</span></span>
+<span id="cb4-78"><a href="#cb4-78"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(language)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-79"><a href="#cb4-79"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(cave), <span class="at">fill =</span> language)) <span class="sc">+</span></span>
+<span id="cb4-80"><a href="#cb4-80"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
+<span id="cb4-81"><a href="#cb4-81"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Qumran Cave"</span>, <span class="at">y =</span> <span class="st">"Proportion"</span>, <span class="at">fill =</span> <span class="st">"Language"</span>, <span class="at">title =</span> <span class="st">"Language Composition Across Qumran Caves"</span>) <span class="sc">+</span></span>
+<span id="cb4-82"><a href="#cb4-82"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb4-83"><a href="#cb4-83"></a><span class="in">```</span></span>
+<span id="cb4-84"><a href="#cb4-84"></a>  </span>
+<span id="cb4-85"><a href="#cb4-85"></a>  The distribution of manuscripts across the various Qumran caves is uneven. Cave 4 contains a significantly larger number of manuscripts—541 in total—whereas the other caves hold far fewer. Treating all caves as equally representative would therefore introduce bias, masking the reality of this numerical imbalance.</span>
+<span id="cb4-86"><a href="#cb4-86"></a>  The types of manuscripts found in each cave also vary; some caves contain a high proportion of biblical texts, while others are dominated by non-biblical, liturgical, or para-biblical writings. Clearly, the differences between the caves extend beyond mere quantity.</span>
+<span id="cb4-87"><a href="#cb4-87"></a>  Linguistically, the manuscripts across the caves are largely similar. Hebrew predominates in most caves, indicating its status as the lingua franca of the time. However, the manuscripts from Cave 7 are exclusively in Greek, setting them apart entirely from those found elsewhere; this demonstrates that the linguistic profile of the manuscripts is not uniform across all locations.</span>
+<span id="cb4-88"><a href="#cb4-88"></a>  In summary, the differences among these cave manuscripts go beyond quantity. While Cave 4 holds the vast majority of the texts, the other caves exhibit distinct variations in language and content type. Nevertheless, we must exercise caution when drawing conclusions, as current analyses rely on extant manuscripts that have already been excavated and classified. Since the number of surviving manuscripts from most caves is very small, it is impossible to definitively infer the overall content or original purpose of the manuscript collections as a whole.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
