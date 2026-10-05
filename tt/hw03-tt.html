@@ -658,7 +658,8 @@ $ greenAreaPerCapitaM2                      &lt;dbl&gt; 7.784019, 7.803632, 8.16
 <span id="cb42-7"><a href="#cb42-7"></a>    <span class="at">subtitle =</span> <span class="st">"Five largest increases and decreases in urban green-area share, 1990–2020"</span>,</span>
 <span id="cb42-8"><a href="#cb42-8"></a>    <span class="at">x =</span> <span class="st">"Change in green-area share (percentage points)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
 <span id="cb42-9"><a href="#cb42-9"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb42-10"><a href="#cb42-10"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb42-10"><a href="#cb42-10"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>) <span class="sc">+</span></span>
+<span id="cb42-11"><a href="#cb42-11"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Graphic by Andy Zhu | Source: TidyTuesday (2026-09-22)."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="hw03-tt_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1451,13 +1452,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb43-178"><a href="#cb43-178"></a>    <span class="at">subtitle =</span> <span class="st">"Five largest increases and decreases in urban green-area share, 1990–2020"</span>,</span>
 <span id="cb43-179"><a href="#cb43-179"></a>    <span class="at">x =</span> <span class="st">"Change in green-area share (percentage points)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
 <span id="cb43-180"><a href="#cb43-180"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb43-181"><a href="#cb43-181"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span>
-<span id="cb43-182"><a href="#cb43-182"></a><span class="in">```</span></span>
-<span id="cb43-183"><a href="#cb43-183"></a>The cities with the largest losses experienced much greater changes than those with the largest gains. Kenema and Bo in Sierra Leone lost about 63.4 and 60.8 percentage points of green-area share, respectively, while the largest increase was about 17.8 percentage points in Stoke-on-Trent. The largest decrease were concentrated in Sierra Leone and the Democratic Republic of the Congo, whereas the cities with the largest gains were spread across countries. These extreme cases explained the long negative tail seen in the overall distribution and show that the decline in green-area share was especially severe for a relatively small number of cities.</span>
-<span id="cb43-184"><a href="#cb43-184"></a></span>
-<span id="cb43-185"><a href="#cb43-185"></a><span class="fu">## Conclusion</span></span>
-<span id="cb43-186"><a href="#cb43-186"></a></span>
-<span id="cb43-187"><a href="#cb43-187"></a>Overall, urban green-area share declined more often than it increased between 1990 and 2020. However, the changes were not evenly distributed either in regions or individual cities. Some regions had typical changes close to zero, while others showed larger declines, and a small number of cities experienced very large losses. Together, these results suggest that the overall downward pattern is driven by a combination of widespread moderate declines and much more severe losses in certain cities.</span>
+<span id="cb43-181"><a href="#cb43-181"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>) <span class="sc">+</span></span>
+<span id="cb43-182"><a href="#cb43-182"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Graphic by Andy Zhu | Source: TidyTuesday (2026-09-22)."</span>)</span>
+<span id="cb43-183"><a href="#cb43-183"></a><span class="in">```</span></span>
+<span id="cb43-184"><a href="#cb43-184"></a>The cities with the largest losses experienced much greater changes than those with the largest gains. Kenema and Bo in Sierra Leone lost about 63.4 and 60.8 percentage points of green-area share, respectively, while the largest increase was about 17.8 percentage points in Stoke-on-Trent. The largest decrease were concentrated in Sierra Leone and the Democratic Republic of the Congo, whereas the cities with the largest gains were spread across countries. These extreme cases explained the long negative tail seen in the overall distribution and show that the decline in green-area share was especially severe for a relatively small number of cities.</span>
+<span id="cb43-185"><a href="#cb43-185"></a></span>
+<span id="cb43-186"><a href="#cb43-186"></a><span class="fu">## Conclusion</span></span>
+<span id="cb43-187"><a href="#cb43-187"></a></span>
+<span id="cb43-188"><a href="#cb43-188"></a>Overall, urban green-area share declined more often than it increased between 1990 and 2020. However, the changes were not evenly distributed either in regions or individual cities. Some regions had typical changes close to zero, while others showed larger declines, and a small number of cities experienced very large losses. Together, these results suggest that the overall downward pattern is driven by a combination of widespread moderate declines and much more severe losses in certain cities.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
