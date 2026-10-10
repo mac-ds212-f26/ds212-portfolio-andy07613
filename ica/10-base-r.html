@@ -1,0 +1,2436 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>10 Base R – COMP/STAT212 Portfolio</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../extra/extra-sample1.html" rel="next">
+<link href="../ica/09-functions.html" rel="prev">
+<script src="../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-463f7e572b85bff0cfe833e89a202fa4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-2b27489b1280a247593da265a4955406.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"simple",
+  "consent_type":"implied",
+  "palette":"light",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
+  ,
+"language":"en"
+  });
+});
+</script><style>html{ scroll-behavior: smooth; }</style>
+<link rel="stylesheet" href="../style/custom.css">
+</head>
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../ica/ica-sample1.html">In-Class Activities</a></li><li class="breadcrumb-item"><a href="../ica/10-base-r.html"><span class="chapter-title">10 Base R</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../assets/sidebar-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">COMP/STAT212 Portfolio for Andy Zhu</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Personal Viz Journey</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pvj/pvj-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Personal Visualization Journey</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">TidyTuesday</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tt/2025-07-08.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">TidyTuesday Sample 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tt/2025-07-15.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">TidyTuesday Sample 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tt/hw01-tt.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Homework 01</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Pre-Class Learnings</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pcl/pcl.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Pre-Class Learning Summaries</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">In-Class Activities</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ica/ica-sample1.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">ICA Sample 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ica/ica-sample2.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">ICA Sample 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ica/cleaning.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Cleaning SFO Weather Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ica/03-adv-ggplot-notes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">3 Adv Data Viz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ica/04_adv_maps/code/04-adv-maps-1-notes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">4 Adv Spatial Viz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ica/06-wrangling-1-notes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">6 Adv Data wrangling I</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ica/07-wrangling-2.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">7 Adv Data wrangling II</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ica/08-missing-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">8 Missing Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ica/09-functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">9 Functions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ica/10-base-r.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">10 Base R</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Extras</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../extra/extra-sample1.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Extra Sample 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../extra/extra-sample2.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Extra Sample 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../extra/manuscriptextrawork-tt.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Homework 02 Extra</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tt/hw03-tt.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Homework 03</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#learning-goals" id="toc-learning-goals" class="nav-link active" data-scroll-target="#learning-goals">🧩 Learning Goals</a></li>
+  <li>
+<a href="#common-r-object-structures" id="toc-common-r-object-structures" class="nav-link" data-scroll-target="#common-r-object-structures">Common R Object Structures</a>
+  <ul class="collapse">
+<li><a href="#vector" id="toc-vector" class="nav-link" data-scroll-target="#vector">Vector</a></li>
+  <li><a href="#list" id="toc-list" class="nav-link" data-scroll-target="#list">List</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#other-common-r-object-structures" id="toc-other-common-r-object-structures" class="nav-link" data-scroll-target="#other-common-r-object-structures">Other Common R Object Structures</a>
+  <ul class="collapse">
+<li><a href="#array" id="toc-array" class="nav-link" data-scroll-target="#array">Array</a></li>
+  <li><a href="#matrix" id="toc-matrix" class="nav-link" data-scroll-target="#matrix">Matrix</a></li>
+  <li><a href="#data-frametibble" id="toc-data-frametibble" class="nav-link" data-scroll-target="#data-frametibble">Data Frame/Tibble</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#subset-with" id="toc-subset-with" class="nav-link" data-scroll-target="#subset-with">Subset with <code>[</code></a>
+  <ul class="collapse">
+<li><a href="#positive-integers" id="toc-positive-integers" class="nav-link" data-scroll-target="#positive-integers">Positive Integers</a></li>
+  <li><a href="#negative-integers" id="toc-negative-integers" class="nav-link" data-scroll-target="#negative-integers">Negative Integers</a></li>
+  <li><a href="#logical-vector" id="toc-logical-vector" class="nav-link" data-scroll-target="#logical-vector">Logical Vector</a></li>
+  <li><a href="#character-vector" id="toc-character-vector" class="nav-link" data-scroll-target="#character-vector">Character Vector</a></li>
+  <li><a href="#replace" id="toc-replace" class="nav-link" data-scroll-target="#replace">Replace</a></li>
+  <li><a href="#matrices-data-frames" id="toc-matrices-data-frames" class="nav-link" data-scroll-target="#matrices-data-frames">Matrices &amp; Data Frames</a></li>
+  </ul>
+</li>
+  <li><a href="#select-a-single-element-with-and" id="toc-select-a-single-element-with-and" class="nav-link" data-scroll-target="#select-a-single-element-with-and">Select a Single Element with <code>$</code> and <code>[[</code></a></li>
+  <li><a href="#get-even-positions" id="toc-get-even-positions" class="nav-link" data-scroll-target="#get-even-positions">✏️ Get Even Positions</a></li>
+  <li><a href="#drop-last-element" id="toc-drop-last-element" class="nav-link" data-scroll-target="#drop-last-element">✏️ Drop Last Element</a></li>
+  <li><a href="#keep-even-values" id="toc-keep-even-values" class="nav-link" data-scroll-target="#keep-even-values">✏️ Keep Even Values</a></li>
+  <li><a href="#explore-structure-with-str" id="toc-explore-structure-with-str" class="nav-link" data-scroll-target="#explore-structure-with-str">Explore Structure with <code>str()</code></a></li>
+  <li><a href="#extract-ci" id="toc-extract-ci" class="nav-link" data-scroll-target="#extract-ci">✏️ Extract CI</a></li>
+  <li>
+<a href="#debugging-strategies" id="toc-debugging-strategies" class="nav-link" data-scroll-target="#debugging-strategies">Debugging Strategies</a>
+  <ul class="collapse">
+<li><a href="#print-cat" id="toc-print-cat" class="nav-link" data-scroll-target="#print-cat"><code>print()</code> &amp; <code>cat()</code></a></li>
+  <li><a href="#browser" id="toc-browser" class="nav-link" data-scroll-target="#browser"><code>browser()</code></a></li>
+  <li><a href="#try" id="toc-try" class="nav-link" data-scroll-target="#try"><code>try()</code></a></li>
+  <li><a href="#stop" id="toc-stop" class="nav-link" data-scroll-target="#stop"><code>stop()</code></a></li>
+  </ul>
+</li>
+  <li><a href="#done" id="toc-done" class="nav-link" data-scroll-target="#done">Done!</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content column-body" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../ica/ica-sample1.html">In-Class Activities</a></li><li class="breadcrumb-item"><a href="../ica/10-base-r.html"><span class="chapter-title">10 Base R</span></a></li></ol></nav><div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-title">10 Base R</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta column-body">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><section id="learning-goals" class="level2"><h2 class="anchored" data-anchor-id="learning-goals">🧩 Learning Goals</h2>
+<p>By the end of this lesson, you should be able to:</p>
+<ul>
+<li>Identify and define the properties of common structures in R</li>
+<li>Subset vectors and lists with <code>[</code> by index, name, logical vector, and indirectly with objects</li>
+<li>Subset data frames and lists with <code>$</code> and <code>[[</code>
+</li>
+<li>Use the <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> function to examine the structure of an unfamiliar object and extract components from the object</li>
+<li>Apply printing strategies to streamline the debugging and development process</li>
+</ul>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="common-r-object-structures" class="level2"><h2 class="anchored" data-anchor-id="common-r-object-structures">Common R Object Structures</h2>
+<section id="vector" class="level3"><h3 class="anchored" data-anchor-id="vector">Vector</h3>
+<p>A vector is a <strong>collection of elements</strong> of the <strong>same type</strong> (e.g., numeric, integer, character, logical).</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>num_vec <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"numeric"</span>, <span class="at">length =</span> <span class="dv">2</span>) <span class="co">#empty vector: Zeros</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>num_vec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 0 0</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">class</span>(num_vec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "numeric"</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">length</span>(num_vec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>log_vec <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"logical"</span>, <span class="at">length =</span> <span class="dv">3</span>) <span class="co">#empty vector: FALSE</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>log_vec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE FALSE FALSE</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">class</span>(log_vec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "logical"</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">length</span>(log_vec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>chr_vec <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"character"</span>, <span class="at">length =</span> <span class="dv">4</span>) <span class="co">#empty vector: empty strings</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>chr_vec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "" "" "" ""</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">class</span>(chr_vec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">length</span>(chr_vec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+<p><em>Fun Fact: A vector can have names for each of its elements.</em></p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>named_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'name1'</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">'name2'</span> <span class="ot">=</span> <span class="dv">2</span>) <span class="co"># Named numeric vector</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>named_vec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>name1 name2 
+    1     2 </code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">class</span>(named_vec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "numeric"</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">length</span>(named_vec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+</div>
+</section><section id="list" class="level3"><h3 class="anchored" data-anchor-id="list">List</h3>
+<p>A list is a collection of elements (e.g., vectors, matrices, data frames, other lists).</p>
+<ul>
+<li>A list can have different types of elements.</li>
+<li>A list can have names for its elements.</li>
+</ul>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>ex_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">b =</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>), <span class="at">c =</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">nrow =</span> <span class="dv">2</span>))</span>
+<span id="cb26-2"><a href="#cb26-2"></a>ex_list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>$a
+[1] 1 2 3
+
+$b
+[1] "a" "b" "c"
+
+$c
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">class</span>(ex_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "list"</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">length</span>(ex_list) <span class="co"># number of elements in a list</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+</div>
+</section></section><section id="other-common-r-object-structures" class="level2"><h2 class="anchored" data-anchor-id="other-common-r-object-structures">Other Common R Object Structures</h2>
+<section id="array" class="level3"><h3 class="anchored" data-anchor-id="array">Array</h3>
+<p>An array is a <strong>vector</strong> with a dimension attribute.</p>
+<ul>
+<li>Like a vector, an array can only have one type of data (e.g., numeric, character).</li>
+</ul>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>ary <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb32-2"><a href="#cb32-2"></a>ary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>, , 1
+
+     [,1] [,2] [,3]
+[1,]   NA   NA   NA
+[2,]   NA   NA   NA
+
+, , 2
+
+     [,1] [,2] [,3]
+[1,]   NA   NA   NA
+[2,]   NA   NA   NA
+
+, , 3
+
+     [,1] [,2] [,3]
+[1,]   NA   NA   NA
+[2,]   NA   NA   NA
+
+, , 4
+
+     [,1] [,2] [,3]
+[1,]   NA   NA   NA
+[2,]   NA   NA   NA</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">class</span>(ary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "array"</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="fu">length</span>(ary) <span class="co"># The number of elements in a array is the product of its dimensions</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 24</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">dim</span>(ary) <span class="co"># Get the dimensions of the array</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 2 3 4</code></pre>
+</div>
+</div>
+</section><section id="matrix" class="level3"><h3 class="anchored" data-anchor-id="matrix">Matrix</h3>
+<p>A matrix is an <strong>array</strong> with only 2 dimensions (rows, columns).</p>
+<ul>
+<li>Like a vector, a matrix can only have one type of data (e.g., numeric, character).</li>
+</ul>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb40-2"><a href="#cb40-2"></a>m</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]   NA   NA   NA
+[2,]   NA   NA   NA</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="fu">class</span>(m)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "matrix" "array" </code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="fu">length</span>(m) <span class="co"># The number of elements in a matrix is the product of its dimensions</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 6</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a><span class="fu">dim</span>(m) <span class="co"># Get the dimensions of the matrix</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 2 3</code></pre>
+</div>
+</div>
+</section><section id="data-frametibble" class="level3"><h3 class="anchored" data-anchor-id="data-frametibble">Data Frame/Tibble</h3>
+<p>A data frame is a named <strong>list</strong> with <strong>elements</strong> of equal length.</p>
+<ul>
+<li>Each element is a “column” in the data frame.</li>
+<li>The columns can be of different types (e.g., character, numeric, logical, lists, etc.).</li>
+<li>Data frames are the most common way to store data in R.</li>
+<li><a href="https://tibble.tidyverse.org/reference/tbl_df-class.html">Tibbles do less and complain more than base data.frames</a></li>
+</ul>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a>mod_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">y =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">10</span>))</span>
+<span id="cb48-2"><a href="#cb48-2"></a></span>
+<span id="cb48-3"><a href="#cb48-3"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">b =</span> <span class="fu">c</span>(<span class="st">"constant"</span>, <span class="st">"x"</span>, <span class="st">"x squared"</span>), <span class="at">d =</span> <span class="fu">list</span>(<span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> mod_df), <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> mod_df), <span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>), <span class="at">data =</span> mod_df)))</span>
+<span id="cb48-4"><a href="#cb48-4"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+      a b         d     
+  &lt;int&gt; &lt;chr&gt;     &lt;list&gt;
+1     1 constant  &lt;lm&gt;  
+2     2 x         &lt;lm&gt;  
+3     3 x squared &lt;lm&gt;  </code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a><span class="fu">length</span>(df) <span class="co"># number of "elements" in a data frame is the number of "columns"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+</div>
+</section></section><section id="subset-with" class="level2"><h2 class="anchored" data-anchor-id="subset-with">Subset with <code>[</code>
+</h2>
+<p>The content here comes from Chapter 27 of R4DS, with some small additions.</p>
+<p>We can subset common R structures and <strong>maintain the class structure</strong> with <code>[ ]</code>.</p>
+<p>There are four main types of things that you can subset with, i.e., that can be the <code>i</code> in <code>x[i]</code>.</p>
+<section id="positive-integers" class="level3"><h3 class="anchored" data-anchor-id="positive-integers">Positive Integers</h3>
+<p>Subsetting with a vector of positive integers keeps the elements at those positions:</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a><span class="co"># Vectors</span></span>
+<span id="cb52-2"><a href="#cb52-2"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"one"</span>, <span class="st">"two"</span>, <span class="st">"three"</span>, <span class="st">"four"</span>, <span class="st">"five"</span>)</span>
+<span id="cb52-3"><a href="#cb52-3"></a>x[<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">5</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "three" "two"   "five" </code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1"></a>x[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "two"   "three" "four" </code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1"></a><span class="fu">class</span>(x[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]) <span class="co"># result is a character vector</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1"></a><span class="co"># Lists</span></span>
+<span id="cb58-2"><a href="#cb58-2"></a>y <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">b =</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>), <span class="at">c =</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">nrow =</span> <span class="dv">2</span>))</span>
+<span id="cb58-3"><a href="#cb58-3"></a>y[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>$a
+[1] 1 2 3
+
+$b
+[1] "a" "b" "c"</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="fu">class</span>(y[<span class="fu">c</span>(<span class="dv">1</span>)]) <span class="co"># result is a list</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "list"</code></pre>
+</div>
+</div>
+<p>By repeating a position, you can actually make a longer output than input, making the term “subsetting” a bit of a misnomer.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a><span class="co"># Vector</span></span>
+<span id="cb62-2"><a href="#cb62-2"></a>x[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "one" "one" "two"</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a><span class="co"># List</span></span>
+<span id="cb64-2"><a href="#cb64-2"></a>y[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>$a
+[1] 1 2 3
+
+$a
+[1] 1 2 3
+
+$b
+[1] "a" "b" "c"</code></pre>
+</div>
+</div>
+</section><section id="negative-integers" class="level3"><h3 class="anchored" data-anchor-id="negative-integers">Negative Integers</h3>
+<p>Negative values drop the elements at the specified positions:</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a><span class="co"># Vector</span></span>
+<span id="cb66-2"><a href="#cb66-2"></a>x[<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">3</span>, <span class="sc">-</span><span class="dv">5</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "two"  "four"</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a><span class="co"># List</span></span>
+<span id="cb68-2"><a href="#cb68-2"></a>y[<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>$b
+[1] "a" "b" "c"
+
+$c
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6</code></pre>
+</div>
+</div>
+</section><section id="logical-vector" class="level3"><h3 class="anchored" data-anchor-id="logical-vector">Logical Vector</h3>
+<p>Subsetting with a logical vector only keeps values corresponding to <code>TRUE</code>. This is generally used with comparison functions and operators.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a><span class="co"># Vector</span></span>
+<span id="cb70-2"><a href="#cb70-2"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">3</span>, <span class="cn">NA</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">1</span>, <span class="cn">NA</span>)</span>
+<span id="cb70-3"><a href="#cb70-3"></a></span>
+<span id="cb70-4"><a href="#cb70-4"></a><span class="co"># All non-missing values of x</span></span>
+<span id="cb70-5"><a href="#cb70-5"></a>x[<span class="sc">!</span><span class="fu">is.na</span>(x)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 10  3  5  8  1</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a><span class="co"># All values greater than 5, with NAs</span></span>
+<span id="cb72-2"><a href="#cb72-2"></a>x[x <span class="sc">&gt;</span> <span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 10 NA  8 NA</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1"></a><span class="co"># All non-missing values greater than 5</span></span>
+<span id="cb74-2"><a href="#cb74-2"></a>x[x <span class="sc">&gt;</span> <span class="dv">5</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(x)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 10  8</code></pre>
+</div>
+</div>
+<p>Unlike <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code>, <code>NA</code> indices will be included in the output as <code>NA</code>s unless you explicitly remove them (<code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> removes instances of missing values by default.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1"></a><span class="co"># Compare with filter</span></span>
+<span id="cb76-2"><a href="#cb76-2"></a><span class="fu">filter</span>(<span class="fu">tibble</span>(<span class="at">x =</span> x), x <span class="sc">&gt;</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 1
+      x
+  &lt;dbl&gt;
+1    10
+2     8</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1"></a><span class="co"># List</span></span>
+<span id="cb78-2"><a href="#cb78-2"></a>y[<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>$a
+[1] 1 2 3
+
+$c
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1"></a>y[y <span class="sc">|&gt;</span> <span class="fu">map_lgl</span>(<span class="sc">~</span> <span class="fu">is.numeric</span>(.x))] <span class="co"># example of a map function!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>$a
+[1] 1 2 3
+
+$c
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1"></a>y[y <span class="sc">|&gt;</span> <span class="fu">map_lgl</span>(<span class="sc">~</span> <span class="fu">is.character</span>(.x))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>$b
+[1] "a" "b" "c"</code></pre>
+</div>
+</div>
+</section><section id="character-vector" class="level3"><h3 class="anchored" data-anchor-id="character-vector">Character Vector</h3>
+<p>If you have a named vector or list, you can subset it with a character vector:</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1"></a><span class="co"># Named Vector</span></span>
+<span id="cb84-2"><a href="#cb84-2"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">abc =</span> <span class="dv">1</span>, <span class="at">def =</span> <span class="dv">2</span>, <span class="at">xyz =</span> <span class="dv">5</span>)</span>
+<span id="cb84-3"><a href="#cb84-3"></a>x[<span class="fu">c</span>(<span class="st">"xyz"</span>, <span class="st">"def"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>xyz def 
+  5   2 </code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1"></a>x[<span class="fu">c</span>(<span class="st">"xyz"</span>,<span class="st">"xyz"</span>,<span class="st">"xyz"</span>, <span class="st">"def"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>xyz xyz xyz def 
+  5   5   5   2 </code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1"></a><span class="co">#Named List</span></span>
+<span id="cb88-2"><a href="#cb88-2"></a>y[<span class="fu">c</span>(<span class="st">'a'</span>,<span class="st">'a'</span>,<span class="st">'c'</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>$a
+[1] 1 2 3
+
+$a
+[1] 1 2 3
+
+$c
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6</code></pre>
+</div>
+</div>
+<p>As with subsetting with positive integers, you can use a character vector to duplicate individual entries.</p>
+</section><section id="replace" class="level3"><h3 class="anchored" data-anchor-id="replace">Replace</h3>
+<p><strong>Be very wary of vector recycling when doing this!</strong> The number of things that you’re inserting should either be 1 or the size of the <code>x[i]</code> subset.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">first =</span> <span class="st">"one"</span>, <span class="at">second =</span> <span class="st">"two"</span>, <span class="at">third =</span> <span class="st">"three"</span>, <span class="at">fourth =</span> <span class="st">"four"</span>)</span>
+<span id="cb90-2"><a href="#cb90-2"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>  first  second   third  fourth 
+  "one"   "two" "three"  "four" </code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb92"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1"></a>x[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)] <span class="ot">&lt;-</span> <span class="st">"new"</span> <span class="co"># Replacement length is 1</span></span>
+<span id="cb92-2"><a href="#cb92-2"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code> first second  third fourth 
+ "new"  "two"  "new" "four" </code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb94"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">first =</span> <span class="st">"one"</span>, <span class="at">second =</span> <span class="st">"two"</span>, <span class="at">third =</span> <span class="st">"three"</span>, <span class="at">fourth =</span> <span class="st">"four"</span>)</span>
+<span id="cb94-2"><a href="#cb94-2"></a>x[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"new1"</span>, <span class="st">"new2"</span>) <span class="co"># Replacement length is 2, and length of subset is 2</span></span>
+<span id="cb94-3"><a href="#cb94-3"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code> first second  third fourth 
+"new1"  "two" "new2" "four" </code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb96"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">first =</span> <span class="st">"one"</span>, <span class="at">second =</span> <span class="st">"two"</span>, <span class="at">third =</span> <span class="st">"three"</span>, <span class="at">fourth =</span> <span class="st">"four"</span>)</span>
+<span id="cb96-2"><a href="#cb96-2"></a>x[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>)] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"new1"</span>, <span class="st">"new2"</span>) <span class="co"># BAD! Replacement length is 2, and length of subset is 3</span></span>
+<span id="cb96-3"><a href="#cb96-3"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code> first second  third fourth 
+"new1"  "two" "new2" "new1" </code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb98"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">first =</span> <span class="st">"one"</span>, <span class="at">second =</span> <span class="st">"two"</span>, <span class="at">third =</span> <span class="st">"three"</span>, <span class="at">fourth =</span> <span class="st">"four"</span>)</span>
+<span id="cb98-2"><a href="#cb98-2"></a>x[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"new1"</span>, <span class="st">"new2"</span>, <span class="st">"new3"</span>) <span class="co"># BAD! Replacement length is 3, and length of subset is 2</span></span>
+<span id="cb98-3"><a href="#cb98-3"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code> first second  third fourth 
+"new1"  "two" "new2" "four" </code></pre>
+</div>
+</div>
+</section><section id="matrices-data-frames" class="level3"><h3 class="anchored" data-anchor-id="matrices-data-frames">Matrices &amp; Data Frames</h3>
+<p>All of the above subsetting options can be used for subsetting matrices and data frames (named list of elements of equal length).</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb100"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
+<span id="cb100-2"><a href="#cb100-2"></a>m</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]    1    4    7   10
+[2,]    2    5    8   11
+[3,]    3    6    9   12</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb102"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1"></a>m[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>] <span class="co"># Matrix = vector (down the columns) with dimensions</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2 3 4 5</code></pre>
+</div>
+</div>
+<p>You can use a comma to subset by rows and columns separately.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb104"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1"></a>m[<span class="dv">1</span>,] <span class="co"># Get 1st row</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1]  1  4  7 10</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb106"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1"></a>m[,<span class="dv">1</span>] <span class="co"># Get 1st column</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2 3</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb108"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1"></a>m[<span class="dv">1</span>,<span class="dv">3</span>] <span class="co"># Get 1st row and 3rd column</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 7</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb110"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1"></a>m[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>),] <span class="co"># Get 1st and 3rd rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]    1    4    7   10
+[2,]    3    6    9   12</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb112"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1"></a>m[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)] <span class="co"># Get 1st and 3rd columns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]    1    7
+[2,]    2    8
+[3,]    3    9</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb114"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1"></a>m[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>),<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)] <span class="co"># Get 1st and 3rd rows and 1st and 3rd columns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]    1    7
+[2,]    3    9</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb116"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1"></a>m[<span class="sc">-</span><span class="dv">1</span>,] <span class="co"># Get all rows except 1st</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]    2    5    8   11
+[2,]    3    6    9   12</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb118"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1"></a>m[<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>),] <span class="co"># Get the 1st row via a logical</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1]  1  4  7 10</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb120"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1"></a><span class="co"># Add row and column names to the matrix</span></span>
+<span id="cb120-2"><a href="#cb120-2"></a><span class="fu">colnames</span>(m) <span class="ot">&lt;-</span> <span class="fu">str_c</span>(<span class="st">"col"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span>
+<span id="cb120-3"><a href="#cb120-3"></a><span class="fu">rownames</span>(m) <span class="ot">&lt;-</span> <span class="fu">str_c</span>(<span class="st">"row"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
+<span id="cb120-4"><a href="#cb120-4"></a>m[<span class="st">"row1"</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>col1 col2 col3 col4 
+   1    4    7   10 </code></pre>
+</div>
+</div>
+</section></section><section id="select-a-single-element-with-and" class="level2"><h2 class="anchored" data-anchor-id="select-a-single-element-with-and">Select a Single Element with <code>$</code> and <code>[[</code>
+</h2>
+<p>We can use <code>$</code> and <code>[[</code> to extract a single column of a data frame or an element within a list. This <strong>breaks out of the original class structure</strong>.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb122"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1"></a>mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>                     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+Mazda RX4           21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+Mazda RX4 Wag       21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+Datsun 710          22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+Hornet 4 Drive      21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+Hornet Sportabout   18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+Valiant             18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+Duster 360          14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+Merc 240D           24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+Merc 230            22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+Merc 280            19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+Merc 280C           17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+Merc 450SE          16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+Merc 450SL          17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+Merc 450SLC         15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+Cadillac Fleetwood  10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+Chrysler Imperial   14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+Fiat 128            32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+Honda Civic         30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+Toyota Corolla      33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+Toyota Corona       21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+Dodge Challenger    15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+AMC Javelin         15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+Camaro Z28          13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+Pontiac Firebird    19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+Fiat X1-9           27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+Porsche 914-2       26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+Lotus Europa        30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+Ford Pantera L      15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+Ferrari Dino        19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb124"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1"></a>mtcars<span class="sc">$</span>mpg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code> [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2 10.4
+[16] 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4 15.8 19.7
+[31] 15.0 21.4</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb126"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1"></a>mtcars[[<span class="st">"mpg"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code> [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2 10.4
+[16] 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4 15.8 19.7
+[31] 15.0 21.4</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb128"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1"></a>mtcars <span class="sc">|&gt;</span> <span class="fu">pull</span>(mpg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code> [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2 10.4
+[16] 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4 15.8 19.7
+[31] 15.0 21.4</code></pre>
+</div>
+</div>
+<p>For each of the tasks below, write a function that take a vector as input returns the desired output.</p>
+</section><section id="get-even-positions" class="level2"><h2 class="anchored" data-anchor-id="get-even-positions">✏️ Get Even Positions</h2>
+<p>Return the elements at even-numbered positions. (Hint: use the <code><a href="https://rdrr.io/r/base/seq.html">seq()</a></code> function.)</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb130"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1"></a>get_even_positions <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb130-2"><a href="#cb130-2"></a>  <span class="cf">if</span> (<span class="fu">length</span>(x) <span class="sc">&lt;</span> <span class="dv">2</span>) <span class="fu">return</span>(x[<span class="dv">0</span>])</span>
+<span id="cb130-3"><a href="#cb130-3"></a>  x[<span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">2</span>, <span class="at">to =</span> <span class="fu">length</span>(x), <span class="at">by =</span> <span class="dv">2</span>)]</span>
+<span id="cb130-4"><a href="#cb130-4"></a>}</span>
+<span id="cb130-5"><a href="#cb130-5"></a><span class="fu">get_even_positions</span>(<span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">60</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 20 40 60</code></pre>
+</div>
+</div>
+</section><section id="drop-last-element" class="level2"><h2 class="anchored" data-anchor-id="drop-last-element">✏️ Drop Last Element</h2>
+<p>Return every element except the last value.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb132"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1"></a>drop_last <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb132-2"><a href="#cb132-2"></a>  <span class="cf">if</span> (<span class="fu">length</span>(x) <span class="sc">==</span> <span class="dv">0</span>) <span class="fu">return</span>(x)</span>
+<span id="cb132-3"><a href="#cb132-3"></a>  x[<span class="sc">-</span><span class="fu">length</span>(x)]</span>
+<span id="cb132-4"><a href="#cb132-4"></a>}</span>
+<span id="cb132-5"><a href="#cb132-5"></a><span class="fu">drop_last</span>(<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1]  5 10 15</code></pre>
+</div>
+</div>
+</section><section id="keep-even-values" class="level2"><h2 class="anchored" data-anchor-id="keep-even-values">✏️ Keep Even Values</h2>
+<p>Return only even values (and no missing values).</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb134"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1"></a>keep_even_values <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb134-2"><a href="#cb134-2"></a>  x[<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>]</span>
+<span id="cb134-3"><a href="#cb134-3"></a>}</span>
+<span id="cb134-4"><a href="#cb134-4"></a><span class="fu">keep_even_values</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="cn">NA</span>, <span class="dv">8</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 2 4 6 8</code></pre>
+</div>
+</div>
+</section><section id="explore-structure-with-str" class="level2"><h2 class="anchored" data-anchor-id="explore-structure-with-str">Explore Structure with <code>str()</code>
+</h2>
+<p>The <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> function shows you the structure of an object and is useful for exploring model objects and objects created from packages that are new to you.</p>
+<p>In the output of <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> dollar signs indicate named components of a list that can be extracted via <code>$</code> or <code>[[</code>.</p>
+<p>We see that both <code>mod</code> and <code>mod_summ</code> are lists, so we can also interactively view these objects with <code>View(mod)</code> and <code>View(mod_summ)</code> in the Console.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb136"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> hp <span class="sc">+</span> wt, <span class="at">data =</span> mtcars)</span>
+<span id="cb136-2"><a href="#cb136-2"></a>mod_summ <span class="ot">&lt;-</span> <span class="fu">summary</span>(mod)</span>
+<span id="cb136-3"><a href="#cb136-3"></a></span>
+<span id="cb136-4"><a href="#cb136-4"></a><span class="fu">str</span>(mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>List of 12
+ $ coefficients : Named num [1:3] 37.2273 -0.0318 -3.8778
+  ..- attr(*, "names")= chr [1:3] "(Intercept)" "hp" "wt"
+ $ residuals    : Named num [1:32] -2.572 -1.583 -2.476 0.135 0.373 ...
+  ..- attr(*, "names")= chr [1:32] "Mazda RX4" "Mazda RX4 Wag" "Datsun 710" "Hornet 4 Drive" ...
+ $ effects      : Named num [1:32] -113.65 -26.046 -15.894 0.447 0.662 ...
+  ..- attr(*, "names")= chr [1:32] "(Intercept)" "hp" "wt" "" ...
+ $ rank         : int 3
+ $ fitted.values: Named num [1:32] 23.6 22.6 25.3 21.3 18.3 ...
+  ..- attr(*, "names")= chr [1:32] "Mazda RX4" "Mazda RX4 Wag" "Datsun 710" "Hornet 4 Drive" ...
+ $ assign       : int [1:3] 0 1 2
+ $ qr           :List of 5
+  ..$ qr   : num [1:32, 1:3] -5.657 0.177 0.177 0.177 0.177 ...
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr [1:32] "Mazda RX4" "Mazda RX4 Wag" "Datsun 710" "Hornet 4 Drive" ...
+  .. .. ..$ : chr [1:3] "(Intercept)" "hp" "wt"
+  .. ..- attr(*, "assign")= int [1:3] 0 1 2
+  ..$ qraux: num [1:3] 1.18 1.08 1.09
+  ..$ pivot: int [1:3] 1 2 3
+  ..$ tol  : num 1e-07
+  ..$ rank : int 3
+  ..- attr(*, "class")= chr "qr"
+ $ df.residual  : int 29
+ $ xlevels      : Named list()
+ $ call         : language lm(formula = mpg ~ hp + wt, data = mtcars)
+ $ terms        :Classes 'terms', 'formula'  language mpg ~ hp + wt
+  .. ..- attr(*, "variables")= language list(mpg, hp, wt)
+  .. ..- attr(*, "factors")= int [1:3, 1:2] 0 1 0 0 0 1
+  .. .. ..- attr(*, "dimnames")=List of 2
+  .. .. .. ..$ : chr [1:3] "mpg" "hp" "wt"
+  .. .. .. ..$ : chr [1:2] "hp" "wt"
+  .. ..- attr(*, "term.labels")= chr [1:2] "hp" "wt"
+  .. ..- attr(*, "order")= int [1:2] 1 1
+  .. ..- attr(*, "intercept")= int 1
+  .. ..- attr(*, "response")= int 1
+  .. ..- attr(*, ".Environment")=&lt;environment: R_GlobalEnv&gt; 
+  .. ..- attr(*, "predvars")= language list(mpg, hp, wt)
+  .. ..- attr(*, "dataClasses")= Named chr [1:3] "numeric" "numeric" "numeric"
+  .. .. ..- attr(*, "names")= chr [1:3] "mpg" "hp" "wt"
+ $ model        :'data.frame':  32 obs. of  3 variables:
+  ..$ mpg: num [1:32] 21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+  ..$ hp : num [1:32] 110 110 93 110 175 105 245 62 95 123 ...
+  ..$ wt : num [1:32] 2.62 2.88 2.32 3.21 3.44 ...
+  ..- attr(*, "terms")=Classes 'terms', 'formula'  language mpg ~ hp + wt
+  .. .. ..- attr(*, "variables")= language list(mpg, hp, wt)
+  .. .. ..- attr(*, "factors")= int [1:3, 1:2] 0 1 0 0 0 1
+  .. .. .. ..- attr(*, "dimnames")=List of 2
+  .. .. .. .. ..$ : chr [1:3] "mpg" "hp" "wt"
+  .. .. .. .. ..$ : chr [1:2] "hp" "wt"
+  .. .. ..- attr(*, "term.labels")= chr [1:2] "hp" "wt"
+  .. .. ..- attr(*, "order")= int [1:2] 1 1
+  .. .. ..- attr(*, "intercept")= int 1
+  .. .. ..- attr(*, "response")= int 1
+  .. .. ..- attr(*, ".Environment")=&lt;environment: R_GlobalEnv&gt; 
+  .. .. ..- attr(*, "predvars")= language list(mpg, hp, wt)
+  .. .. ..- attr(*, "dataClasses")= Named chr [1:3] "numeric" "numeric" "numeric"
+  .. .. .. ..- attr(*, "names")= chr [1:3] "mpg" "hp" "wt"
+ - attr(*, "class")= chr "lm"</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb138"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1"></a><span class="fu">str</span>(mod_summ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>List of 11
+ $ call         : language lm(formula = mpg ~ hp + wt, data = mtcars)
+ $ terms        :Classes 'terms', 'formula'  language mpg ~ hp + wt
+  .. ..- attr(*, "variables")= language list(mpg, hp, wt)
+  .. ..- attr(*, "factors")= int [1:3, 1:2] 0 1 0 0 0 1
+  .. .. ..- attr(*, "dimnames")=List of 2
+  .. .. .. ..$ : chr [1:3] "mpg" "hp" "wt"
+  .. .. .. ..$ : chr [1:2] "hp" "wt"
+  .. ..- attr(*, "term.labels")= chr [1:2] "hp" "wt"
+  .. ..- attr(*, "order")= int [1:2] 1 1
+  .. ..- attr(*, "intercept")= int 1
+  .. ..- attr(*, "response")= int 1
+  .. ..- attr(*, ".Environment")=&lt;environment: R_GlobalEnv&gt; 
+  .. ..- attr(*, "predvars")= language list(mpg, hp, wt)
+  .. ..- attr(*, "dataClasses")= Named chr [1:3] "numeric" "numeric" "numeric"
+  .. .. ..- attr(*, "names")= chr [1:3] "mpg" "hp" "wt"
+ $ residuals    : Named num [1:32] -2.572 -1.583 -2.476 0.135 0.373 ...
+  ..- attr(*, "names")= chr [1:32] "Mazda RX4" "Mazda RX4 Wag" "Datsun 710" "Hornet 4 Drive" ...
+ $ coefficients : num [1:3, 1:4] 37.22727 -0.03177 -3.87783 1.59879 0.00903 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr [1:3] "(Intercept)" "hp" "wt"
+  .. ..$ : chr [1:4] "Estimate" "Std. Error" "t value" "Pr(&gt;|t|)"
+ $ aliased      : Named logi [1:3] FALSE FALSE FALSE
+  ..- attr(*, "names")= chr [1:3] "(Intercept)" "hp" "wt"
+ $ sigma        : num 2.59
+ $ df           : int [1:3] 3 29 3
+ $ r.squared    : num 0.827
+ $ adj.r.squared: num 0.815
+ $ fstatistic   : Named num [1:3] 69.2 2 29
+  ..- attr(*, "names")= chr [1:3] "value" "numdf" "dendf"
+ $ cov.unscaled : num [1:3, 1:3] 3.80e-01 2.21e-05 -1.09e-01 2.21e-05 1.21e-05 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr [1:3] "(Intercept)" "hp" "wt"
+  .. ..$ : chr [1:3] "(Intercept)" "hp" "wt"
+ - attr(*, "class")= chr "summary.lm"</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb140"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1"></a>mod<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)          hp          wt 
+37.22727012 -0.03177295 -3.87783074 </code></pre>
+</div>
+</div>
+</section><section id="extract-ci" class="level2"><h2 class="anchored" data-anchor-id="extract-ci">✏️ Extract CI</h2>
+<p>Write a function that fits a linear model on the dataset using the given outcome and predictor variables and return a data frame (<code>tibble</code>) with the coefficient estimate and CI for the predictor of interest. It should take the following inputs:</p>
+<ul>
+<li>
+<code>data</code>: A dataset</li>
+<li>
+<code>yvar</code>: Outcome variable to be used in a linear model (a length-1 character vector)</li>
+<li>
+<code>preds</code>: Predictor variables to be used in a linear model (a character vector)</li>
+<li>
+<code>pred_of_interest</code>: The variable whose coefficient estimate and confidence interval are of interest (a length-1 character vector and should be one of <code>preds</code>)</li>
+</ul>
+<p>Test your function on the <code>mtcars</code> dataset.</p>
+<p>Development tip: As you develop, it will help to create objects for the arguments so that you can see what output looks like interactively:</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb142"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1"></a>data <span class="ot">&lt;-</span> mtcars</span>
+<span id="cb142-2"><a href="#cb142-2"></a>yvar <span class="ot">&lt;-</span> <span class="st">"mpg"</span></span>
+<span id="cb142-3"><a href="#cb142-3"></a>preds <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"hp"</span>, <span class="st">"wt"</span>)</span>
+<span id="cb142-4"><a href="#cb142-4"></a>pred_of_interest <span class="ot">&lt;-</span> <span class="st">"hp"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>When you’re done developing your function, remove these objects to declutter your environment by entering <code>rm(data, yvar, preds, pred_of_interest)</code> in the Console.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb143"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb143-1"><a href="#cb143-1"></a>fit_mod_and_extract <span class="ot">&lt;-</span> <span class="cf">function</span>(data, yvar, preds, pred_of_interest) {</span>
+<span id="cb143-2"><a href="#cb143-2"></a>    <span class="co"># Use str_c to create a string (formula_str) that looks like "yvar ~ pred1 + pred2"</span></span>
+<span id="cb143-3"><a href="#cb143-3"></a>    <span class="co"># Look at the documentation for a helpful argument</span></span>
+<span id="cb143-4"><a href="#cb143-4"></a>    mod_formula_str <span class="ot">&lt;-</span> <span class="fu">str_c</span>(yvar, <span class="st">" ~ "</span>, <span class="fu">str_c</span>(preds, <span class="at">collapse =</span> <span class="st">" + "</span>))</span>
+<span id="cb143-5"><a href="#cb143-5"></a>    mod_form <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(mod_formula_str)</span>
+<span id="cb143-6"><a href="#cb143-6"></a>    <span class="co"># Fit a linear model using the constructed formula and given data</span></span>
+<span id="cb143-7"><a href="#cb143-7"></a>    mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(mod_form, <span class="at">data =</span> data)</span>
+<span id="cb143-8"><a href="#cb143-8"></a></span>
+<span id="cb143-9"><a href="#cb143-9"></a>    <span class="co"># Obtain 95% confidence interval</span></span>
+<span id="cb143-10"><a href="#cb143-10"></a>    ci <span class="ot">&lt;-</span> <span class="fu">confint</span>(mod, <span class="at">level =</span> <span class="fl">0.95</span>)</span>
+<span id="cb143-11"><a href="#cb143-11"></a></span>
+<span id="cb143-12"><a href="#cb143-12"></a>    <span class="co"># Return the coefficient estimate and CI for the predictor of interest</span></span>
+<span id="cb143-13"><a href="#cb143-13"></a>    <span class="fu">tibble</span>(<span class="at">which_pred =</span> pred_of_interest,</span>
+<span id="cb143-14"><a href="#cb143-14"></a>        <span class="at">estimate =</span> mod<span class="sc">$</span>coefficients[pred_of_interest],</span>
+<span id="cb143-15"><a href="#cb143-15"></a>        <span class="at">ci_lower =</span> ci[pred_of_interest, <span class="st">"2.5 %"</span>],</span>
+<span id="cb143-16"><a href="#cb143-16"></a>        <span class="at">ci_upper =</span> ci[pred_of_interest, <span class="st">"97.5 %"</span>])</span>
+<span id="cb143-17"><a href="#cb143-17"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb144"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1"></a><span class="fu">fit_mod_and_extract</span>(<span class="at">data =</span> mtcars, <span class="at">yvar =</span> <span class="st">"mpg"</span>, <span class="at">preds =</span> <span class="fu">c</span>(<span class="st">"hp"</span>, <span class="st">"wt"</span>), <span class="at">pred_of_interest =</span> <span class="st">"hp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  which_pred estimate ci_lower ci_upper
+  &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 hp          -0.0318  -0.0502  -0.0133</code></pre>
+</div>
+</div>
+</section><section id="debugging-strategies" class="level2"><h2 class="anchored" data-anchor-id="debugging-strategies">Debugging Strategies</h2>
+<p>When writing functions and working with functions that you wrote, you may encounter errors that are hard to figure out. Here are some strategies to help you debug the issues you encounter.</p>
+<section id="print-cat" class="level3"><h3 class="anchored" data-anchor-id="print-cat">
+<code>print()</code> &amp; <code>cat()</code>
+</h3>
+<p>Use <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/base/cat.html">cat()</a></code> to print out intermediate results and messages within a function, eg, <code>print(x)</code>, <code>cat("The value of x is", x, "\n")</code></p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb146"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1"></a>My_own_sum <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb146-2"><a href="#cb146-2"></a>  <span class="fu">print</span>(x)</span>
+<span id="cb146-3"><a href="#cb146-3"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(x))</span>
+<span id="cb146-4"><a href="#cb146-4"></a>}</span>
+<span id="cb146-5"><a href="#cb146-5"></a><span class="fu">My_own_sum</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2 3</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb149"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb149-1"><a href="#cb149-1"></a>My_own_sum <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb149-2"><a href="#cb149-2"></a>  <span class="fu">cat</span>(<span class="st">"The value of x is"</span>, x, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb149-3"><a href="#cb149-3"></a>  <span class="fu">cat</span>(<span class="st">"The class of x is"</span>, <span class="fu">class</span>(x), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb149-4"><a href="#cb149-4"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(x))</span>
+<span id="cb149-5"><a href="#cb149-5"></a>}</span>
+<span id="cb149-6"><a href="#cb149-6"></a></span>
+<span id="cb149-7"><a href="#cb149-7"></a><span class="fu">My_own_sum</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>The value of x is 1 2 3 
+The class of x is numeric </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6</code></pre>
+</div>
+</div>
+</section><section id="browser" class="level3"><h3 class="anchored" data-anchor-id="browser"><code>browser()</code></h3>
+<p>Use <code><a href="https://rdrr.io/r/base/browser.html">browser()</a></code> to pause the function at a certain point and interactively explore the environment. Press “Next” or type <code>n</code> to run the next line of code. Type the name of an object in the Console to see its value at this point in the function. You can type <code>Q</code> to quit the browser.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb152"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1"></a>fit_mod_and_extract <span class="ot">&lt;-</span> <span class="cf">function</span>(data, yvar, preds, pred_of_interest) {</span>
+<span id="cb152-2"><a href="#cb152-2"></a>    <span class="co"># Use str_c to create a string (formula_str) that looks like "yvar ~ pred1 + pred2"</span></span>
+<span id="cb152-3"><a href="#cb152-3"></a>    <span class="co"># Look at the documentation for a helpful argument</span></span>
+<span id="cb152-4"><a href="#cb152-4"></a>    mod_formula_str <span class="ot">&lt;-</span> <span class="fu">str_c</span>(yvar, <span class="st">"~"</span>, <span class="fu">str_c</span>(preds, <span class="at">collapse =</span> <span class="st">"+"</span>))</span>
+<span id="cb152-5"><a href="#cb152-5"></a>    mod_form <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(mod_formula_str)</span>
+<span id="cb152-6"><a href="#cb152-6"></a></span>
+<span id="cb152-7"><a href="#cb152-7"></a>    <span class="co"># Add browser() to where in the function you'd like to pause and interact in the function environment using the Console</span></span>
+<span id="cb152-8"><a href="#cb152-8"></a>    <span class="fu">browser</span>()</span>
+<span id="cb152-9"><a href="#cb152-9"></a></span>
+<span id="cb152-10"><a href="#cb152-10"></a>    <span class="co"># Fit a linear model using the constructed formula and given data</span></span>
+<span id="cb152-11"><a href="#cb152-11"></a>    mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(mod_form, <span class="at">data =</span> data)</span>
+<span id="cb152-12"><a href="#cb152-12"></a></span>
+<span id="cb152-13"><a href="#cb152-13"></a>    <span class="co"># Obtain 95% confidence interval</span></span>
+<span id="cb152-14"><a href="#cb152-14"></a>    ci <span class="ot">&lt;-</span> <span class="fu">confint</span>(mod, <span class="at">level =</span> <span class="fl">0.95</span>)</span>
+<span id="cb152-15"><a href="#cb152-15"></a></span>
+<span id="cb152-16"><a href="#cb152-16"></a>    <span class="co"># Return the coefficient estimate and CI for the predictor of interest</span></span>
+<span id="cb152-17"><a href="#cb152-17"></a>    <span class="fu">tibble</span>(</span>
+<span id="cb152-18"><a href="#cb152-18"></a>        <span class="at">which_pred =</span> pred_of_interest,</span>
+<span id="cb152-19"><a href="#cb152-19"></a>        <span class="at">estimate =</span> mod<span class="sc">$</span>coefficients[pred_of_interest],</span>
+<span id="cb152-20"><a href="#cb152-20"></a>        <span class="at">ci_lower =</span> ci[pred_of_interest, <span class="st">"2.5 %"</span>],</span>
+<span id="cb152-21"><a href="#cb152-21"></a>        <span class="at">ci_upper =</span> ci[pred_of_interest, <span class="st">"97.5 %"</span>]</span>
+<span id="cb152-22"><a href="#cb152-22"></a>    )</span>
+<span id="cb152-23"><a href="#cb152-23"></a>}</span>
+<span id="cb152-24"><a href="#cb152-24"></a></span>
+<span id="cb152-25"><a href="#cb152-25"></a></span>
+<span id="cb152-26"><a href="#cb152-26"></a><span class="fu">fit_mod_and_extract</span>(<span class="at">data =</span> mtcars, <span class="at">yvar =</span> <span class="st">"mpg"</span>, <span class="at">preds =</span> <span class="fu">c</span>(<span class="st">"hp"</span>, <span class="st">"wt"</span>), <span class="at">pred_of_interest =</span> <span class="st">"hp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="try" class="level3"><h3 class="anchored" data-anchor-id="try"><code>try()</code></h3>
+<p>Use <code><a href="https://rdrr.io/r/base/try.html">try()</a></code> to catch errors and print out a message when an error occurs.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb153"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb153-1"><a href="#cb153-1"></a>My_own_sum <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb153-2"><a href="#cb153-2"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(x))</span>
+<span id="cb153-3"><a href="#cb153-3"></a>}</span>
+<span id="cb153-4"><a href="#cb153-4"></a></span>
+<span id="cb153-5"><a href="#cb153-5"></a>results <span class="ot">&lt;-</span> <span class="fu">My_own_sum</span>(<span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-error">
+<pre><code>Error in sum(x): invalid 'type' (character) of argument</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb155"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb155-1"><a href="#cb155-1"></a><span class="fu">class</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-error">
+<pre><code>Error: object 'results' not found</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb157"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb157-1"><a href="#cb157-1"></a>results <span class="ot">&lt;-</span> <span class="fu">try</span>(<span class="fu">My_own_sum</span>(<span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>)), <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb157-2"><a href="#cb157-2"></a><span class="fu">class</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "try-error"</code></pre>
+</div>
+</div>
+</section><section id="stop" class="level3"><h3 class="anchored" data-anchor-id="stop"><code>stop()</code></h3>
+<p>Include <code>if else</code> statements within a function to ensure that you are passing the right type of input to a function. You can create you own custom error message with <code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code>.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb159"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb159-1"><a href="#cb159-1"></a>My_own_sum <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb159-2"><a href="#cb159-2"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.numeric</span>(x)){</span>
+<span id="cb159-3"><a href="#cb159-3"></a>    <span class="fu">stop</span>(<span class="st">"Input must be numeric"</span>)</span>
+<span id="cb159-4"><a href="#cb159-4"></a>  }</span>
+<span id="cb159-5"><a href="#cb159-5"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(x))</span>
+<span id="cb159-6"><a href="#cb159-6"></a>}</span>
+<span id="cb159-7"><a href="#cb159-7"></a></span>
+<span id="cb159-8"><a href="#cb159-8"></a>results <span class="ot">&lt;-</span> <span class="fu">My_own_sum</span>(<span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-error">
+<pre><code>Error in My_own_sum(c("a", "b", "c")): Input must be numeric</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb161"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb161-1"><a href="#cb161-1"></a><span class="fu">class</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "try-error"</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb163"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb163-1"><a href="#cb163-1"></a>results <span class="ot">&lt;-</span> <span class="fu">try</span>(<span class="fu">My_own_sum</span>(<span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>)), <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb163-2"><a href="#cb163-2"></a><span class="fu">class</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "try-error"</code></pre>
+</div>
+</div>
+</section></section><section id="done" class="level2"><h2 class="anchored" data-anchor-id="done">Done!</h2>
+<ul>
+<li>Check the ICA Instructions for how to (a) push your code to GitHub and (b) update your portfolio website</li>
+</ul>
+
+
+<!-- -->
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation column-body"><div class="nav-page nav-page-previous">
+      <a href="../ica/09-functions.html" class="pagination-link" aria-label="9 Functions">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">9 Functions</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../extra/extra-sample1.html" class="pagination-link" aria-label="Extra Sample 1">
+        <span class="nav-page-text"><span class="chapter-title">Extra Sample 1</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb165" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb165-1"><a href="#cb165-1"></a><span class="co">---</span></span>
+<span id="cb165-2"><a href="#cb165-2"></a><span class="an">title:</span><span class="co"> "10 Base R"</span></span>
+<span id="cb165-3"><a href="#cb165-3"></a><span class="co">---</span></span>
+<span id="cb165-4"><a href="#cb165-4"></a></span>
+<span id="cb165-5"><a href="#cb165-5"></a></span>
+<span id="cb165-6"><a href="#cb165-6"></a></span>
+<span id="cb165-7"><a href="#cb165-7"></a><span class="fu">## 🧩 Learning Goals</span></span>
+<span id="cb165-8"><a href="#cb165-8"></a></span>
+<span id="cb165-9"><a href="#cb165-9"></a>By the end of this lesson, you should be able to:</span>
+<span id="cb165-10"><a href="#cb165-10"></a></span>
+<span id="cb165-11"><a href="#cb165-11"></a><span class="ss">- </span>Identify and define the properties of common structures in R</span>
+<span id="cb165-12"><a href="#cb165-12"></a><span class="ss">- </span>Subset vectors and lists with <span class="in">`[`</span> by index, name, logical vector, and indirectly with objects</span>
+<span id="cb165-13"><a href="#cb165-13"></a><span class="ss">- </span>Subset data frames and lists with <span class="in">`$`</span> and <span class="in">`[[`</span></span>
+<span id="cb165-14"><a href="#cb165-14"></a><span class="ss">- </span>Use the <span class="in">`str()`</span> function to examine the structure of an unfamiliar object and extract components from the object</span>
+<span id="cb165-15"><a href="#cb165-15"></a><span class="ss">- </span>Apply printing strategies to streamline the debugging and development process</span>
+<span id="cb165-16"><a href="#cb165-16"></a></span>
+<span id="cb165-17"><a href="#cb165-17"></a></span>
+<span id="cb165-18"><a href="#cb165-18"></a><span class="in">```{r doc_setup_10}</span></span>
+<span id="cb165-19"><a href="#cb165-19"></a><span class="in">#| message: false</span></span>
+<span id="cb165-20"><a href="#cb165-20"></a></span>
+<span id="cb165-21"><a href="#cb165-21"></a><span class="in">library(tidyverse)</span></span>
+<span id="cb165-22"><a href="#cb165-22"></a><span class="in">```</span></span>
+<span id="cb165-23"><a href="#cb165-23"></a></span>
+<span id="cb165-24"><a href="#cb165-24"></a></span>
+<span id="cb165-25"><a href="#cb165-25"></a><span class="fu">## Common R Object Structures</span></span>
+<span id="cb165-26"><a href="#cb165-26"></a></span>
+<span id="cb165-27"><a href="#cb165-27"></a><span class="fu">### Vector</span></span>
+<span id="cb165-28"><a href="#cb165-28"></a></span>
+<span id="cb165-29"><a href="#cb165-29"></a>A vector is a **collection of elements** of the **same type** (e.g., numeric, integer, character, logical).</span>
+<span id="cb165-30"><a href="#cb165-30"></a></span>
+<span id="cb165-33"><a href="#cb165-33"></a><span class="in">```{r}</span></span>
+<span id="cb165-34"><a href="#cb165-34"></a>num_vec <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"numeric"</span>, <span class="at">length =</span> <span class="dv">2</span>) <span class="co">#empty vector: Zeros</span></span>
+<span id="cb165-35"><a href="#cb165-35"></a>num_vec</span>
+<span id="cb165-36"><a href="#cb165-36"></a><span class="fu">class</span>(num_vec)</span>
+<span id="cb165-37"><a href="#cb165-37"></a><span class="fu">length</span>(num_vec)</span>
+<span id="cb165-38"><a href="#cb165-38"></a><span class="in">```</span></span>
+<span id="cb165-39"><a href="#cb165-39"></a></span>
+<span id="cb165-42"><a href="#cb165-42"></a><span class="in">```{r}</span></span>
+<span id="cb165-43"><a href="#cb165-43"></a>log_vec <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"logical"</span>, <span class="at">length =</span> <span class="dv">3</span>) <span class="co">#empty vector: FALSE</span></span>
+<span id="cb165-44"><a href="#cb165-44"></a>log_vec</span>
+<span id="cb165-45"><a href="#cb165-45"></a><span class="fu">class</span>(log_vec)</span>
+<span id="cb165-46"><a href="#cb165-46"></a><span class="fu">length</span>(log_vec)</span>
+<span id="cb165-47"><a href="#cb165-47"></a><span class="in">```</span></span>
+<span id="cb165-48"><a href="#cb165-48"></a></span>
+<span id="cb165-51"><a href="#cb165-51"></a><span class="in">```{r}</span></span>
+<span id="cb165-52"><a href="#cb165-52"></a>chr_vec <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"character"</span>, <span class="at">length =</span> <span class="dv">4</span>) <span class="co">#empty vector: empty strings</span></span>
+<span id="cb165-53"><a href="#cb165-53"></a>chr_vec</span>
+<span id="cb165-54"><a href="#cb165-54"></a><span class="fu">class</span>(chr_vec)</span>
+<span id="cb165-55"><a href="#cb165-55"></a><span class="fu">length</span>(chr_vec)</span>
+<span id="cb165-56"><a href="#cb165-56"></a><span class="in">```</span></span>
+<span id="cb165-57"><a href="#cb165-57"></a></span>
+<span id="cb165-58"><a href="#cb165-58"></a>*Fun Fact: A vector can have names for each of its elements.*</span>
+<span id="cb165-59"><a href="#cb165-59"></a></span>
+<span id="cb165-62"><a href="#cb165-62"></a><span class="in">```{r}</span></span>
+<span id="cb165-63"><a href="#cb165-63"></a>named_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'name1'</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">'name2'</span> <span class="ot">=</span> <span class="dv">2</span>) <span class="co"># Named numeric vector</span></span>
+<span id="cb165-64"><a href="#cb165-64"></a>named_vec</span>
+<span id="cb165-65"><a href="#cb165-65"></a><span class="fu">class</span>(named_vec)</span>
+<span id="cb165-66"><a href="#cb165-66"></a><span class="fu">length</span>(named_vec)</span>
+<span id="cb165-67"><a href="#cb165-67"></a><span class="in">```</span></span>
+<span id="cb165-68"><a href="#cb165-68"></a></span>
+<span id="cb165-69"><a href="#cb165-69"></a></span>
+<span id="cb165-70"><a href="#cb165-70"></a><span class="fu">### List</span></span>
+<span id="cb165-71"><a href="#cb165-71"></a></span>
+<span id="cb165-72"><a href="#cb165-72"></a>A list is a collection of elements (e.g., vectors, matrices, data frames, other lists).</span>
+<span id="cb165-73"><a href="#cb165-73"></a></span>
+<span id="cb165-74"><a href="#cb165-74"></a><span class="ss">- </span>A list can have different types of elements.</span>
+<span id="cb165-75"><a href="#cb165-75"></a><span class="ss">- </span>A list can have names for its elements.</span>
+<span id="cb165-76"><a href="#cb165-76"></a></span>
+<span id="cb165-79"><a href="#cb165-79"></a><span class="in">```{r}</span></span>
+<span id="cb165-80"><a href="#cb165-80"></a>ex_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">b =</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>), <span class="at">c =</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">nrow =</span> <span class="dv">2</span>))</span>
+<span id="cb165-81"><a href="#cb165-81"></a>ex_list</span>
+<span id="cb165-82"><a href="#cb165-82"></a></span>
+<span id="cb165-83"><a href="#cb165-83"></a><span class="fu">class</span>(ex_list)</span>
+<span id="cb165-84"><a href="#cb165-84"></a><span class="fu">length</span>(ex_list) <span class="co"># number of elements in a list</span></span>
+<span id="cb165-85"><a href="#cb165-85"></a></span>
+<span id="cb165-86"><a href="#cb165-86"></a><span class="in">```</span></span>
+<span id="cb165-87"><a href="#cb165-87"></a></span>
+<span id="cb165-88"><a href="#cb165-88"></a></span>
+<span id="cb165-89"><a href="#cb165-89"></a><span class="fu">## Other Common R Object Structures</span></span>
+<span id="cb165-90"><a href="#cb165-90"></a></span>
+<span id="cb165-91"><a href="#cb165-91"></a><span class="fu">### Array</span></span>
+<span id="cb165-92"><a href="#cb165-92"></a></span>
+<span id="cb165-93"><a href="#cb165-93"></a>An array is a **vector** with a dimension attribute.</span>
+<span id="cb165-94"><a href="#cb165-94"></a></span>
+<span id="cb165-95"><a href="#cb165-95"></a><span class="ss">- </span>Like a vector, an array can only have one type of data (e.g., numeric, character).</span>
+<span id="cb165-96"><a href="#cb165-96"></a></span>
+<span id="cb165-99"><a href="#cb165-99"></a><span class="in">```{r}</span></span>
+<span id="cb165-100"><a href="#cb165-100"></a>ary <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb165-101"><a href="#cb165-101"></a>ary</span>
+<span id="cb165-102"><a href="#cb165-102"></a></span>
+<span id="cb165-103"><a href="#cb165-103"></a><span class="fu">class</span>(ary)</span>
+<span id="cb165-104"><a href="#cb165-104"></a><span class="fu">length</span>(ary) <span class="co"># The number of elements in a array is the product of its dimensions</span></span>
+<span id="cb165-105"><a href="#cb165-105"></a><span class="fu">dim</span>(ary) <span class="co"># Get the dimensions of the array</span></span>
+<span id="cb165-106"><a href="#cb165-106"></a></span>
+<span id="cb165-107"><a href="#cb165-107"></a><span class="in">```</span></span>
+<span id="cb165-108"><a href="#cb165-108"></a></span>
+<span id="cb165-109"><a href="#cb165-109"></a></span>
+<span id="cb165-110"><a href="#cb165-110"></a><span class="fu">### Matrix</span></span>
+<span id="cb165-111"><a href="#cb165-111"></a></span>
+<span id="cb165-112"><a href="#cb165-112"></a>A matrix is an **array** with only 2 dimensions (rows, columns).</span>
+<span id="cb165-113"><a href="#cb165-113"></a></span>
+<span id="cb165-114"><a href="#cb165-114"></a><span class="ss">- </span>Like a vector, a matrix can only have one type of data (e.g., numeric, character).</span>
+<span id="cb165-115"><a href="#cb165-115"></a></span>
+<span id="cb165-118"><a href="#cb165-118"></a><span class="in">```{r}</span></span>
+<span id="cb165-119"><a href="#cb165-119"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb165-120"><a href="#cb165-120"></a>m</span>
+<span id="cb165-121"><a href="#cb165-121"></a></span>
+<span id="cb165-122"><a href="#cb165-122"></a><span class="fu">class</span>(m)</span>
+<span id="cb165-123"><a href="#cb165-123"></a><span class="fu">length</span>(m) <span class="co"># The number of elements in a matrix is the product of its dimensions</span></span>
+<span id="cb165-124"><a href="#cb165-124"></a><span class="fu">dim</span>(m) <span class="co"># Get the dimensions of the matrix</span></span>
+<span id="cb165-125"><a href="#cb165-125"></a></span>
+<span id="cb165-126"><a href="#cb165-126"></a><span class="in">```</span></span>
+<span id="cb165-127"><a href="#cb165-127"></a></span>
+<span id="cb165-128"><a href="#cb165-128"></a></span>
+<span id="cb165-129"><a href="#cb165-129"></a><span class="fu">### Data Frame/Tibble</span></span>
+<span id="cb165-130"><a href="#cb165-130"></a></span>
+<span id="cb165-131"><a href="#cb165-131"></a>A data frame is a named **list** with **elements** of equal length.</span>
+<span id="cb165-132"><a href="#cb165-132"></a></span>
+<span id="cb165-133"><a href="#cb165-133"></a><span class="ss">- </span>Each element is a "column" in the data frame.</span>
+<span id="cb165-134"><a href="#cb165-134"></a><span class="ss">- </span>The columns can be of different types (e.g., character, numeric, logical, lists, etc.).</span>
+<span id="cb165-135"><a href="#cb165-135"></a><span class="ss">- </span>Data frames are the most common way to store data in R.</span>
+<span id="cb165-136"><a href="#cb165-136"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Tibbles do less and complain more than base data.frames</span><span class="co">](https://tibble.tidyverse.org/reference/tbl_df-class.html)</span></span>
+<span id="cb165-137"><a href="#cb165-137"></a></span>
+<span id="cb165-140"><a href="#cb165-140"></a><span class="in">```{r}</span></span>
+<span id="cb165-141"><a href="#cb165-141"></a>mod_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">y =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">10</span>))</span>
+<span id="cb165-142"><a href="#cb165-142"></a></span>
+<span id="cb165-143"><a href="#cb165-143"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">b =</span> <span class="fu">c</span>(<span class="st">"constant"</span>, <span class="st">"x"</span>, <span class="st">"x squared"</span>), <span class="at">d =</span> <span class="fu">list</span>(<span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> mod_df), <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> mod_df), <span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>), <span class="at">data =</span> mod_df)))</span>
+<span id="cb165-144"><a href="#cb165-144"></a>df</span>
+<span id="cb165-145"><a href="#cb165-145"></a></span>
+<span id="cb165-146"><a href="#cb165-146"></a><span class="fu">length</span>(df) <span class="co"># number of "elements" in a data frame is the number of "columns"</span></span>
+<span id="cb165-147"><a href="#cb165-147"></a></span>
+<span id="cb165-148"><a href="#cb165-148"></a><span class="in">```</span></span>
+<span id="cb165-149"><a href="#cb165-149"></a></span>
+<span id="cb165-150"><a href="#cb165-150"></a></span>
+<span id="cb165-151"><a href="#cb165-151"></a><span class="fu">## Subset with `[`</span></span>
+<span id="cb165-152"><a href="#cb165-152"></a></span>
+<span id="cb165-153"><a href="#cb165-153"></a>The content here comes from Chapter 27 of R4DS, with some small additions.</span>
+<span id="cb165-154"><a href="#cb165-154"></a></span>
+<span id="cb165-155"><a href="#cb165-155"></a>We can subset common R structures and **maintain the class structure** with <span class="in">`[ ]`</span>.</span>
+<span id="cb165-156"><a href="#cb165-156"></a></span>
+<span id="cb165-157"><a href="#cb165-157"></a>There are four main types of things that you can subset with, i.e., that can be the <span class="in">`i`</span> in <span class="in">`x[i]`</span>.</span>
+<span id="cb165-158"><a href="#cb165-158"></a></span>
+<span id="cb165-159"><a href="#cb165-159"></a></span>
+<span id="cb165-160"><a href="#cb165-160"></a><span class="fu">### Positive Integers</span></span>
+<span id="cb165-161"><a href="#cb165-161"></a></span>
+<span id="cb165-162"><a href="#cb165-162"></a>Subsetting with a vector of positive integers keeps the elements at those positions:</span>
+<span id="cb165-163"><a href="#cb165-163"></a></span>
+<span id="cb165-166"><a href="#cb165-166"></a><span class="in">```{r}</span></span>
+<span id="cb165-167"><a href="#cb165-167"></a><span class="co"># Vectors</span></span>
+<span id="cb165-168"><a href="#cb165-168"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"one"</span>, <span class="st">"two"</span>, <span class="st">"three"</span>, <span class="st">"four"</span>, <span class="st">"five"</span>)</span>
+<span id="cb165-169"><a href="#cb165-169"></a>x[<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">5</span>)]</span>
+<span id="cb165-170"><a href="#cb165-170"></a>x[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb165-171"><a href="#cb165-171"></a><span class="fu">class</span>(x[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]) <span class="co"># result is a character vector</span></span>
+<span id="cb165-172"><a href="#cb165-172"></a><span class="in">```</span></span>
+<span id="cb165-173"><a href="#cb165-173"></a></span>
+<span id="cb165-176"><a href="#cb165-176"></a><span class="in">```{r}</span></span>
+<span id="cb165-177"><a href="#cb165-177"></a><span class="co"># Lists</span></span>
+<span id="cb165-178"><a href="#cb165-178"></a>y <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">b =</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>), <span class="at">c =</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">nrow =</span> <span class="dv">2</span>))</span>
+<span id="cb165-179"><a href="#cb165-179"></a>y[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)]</span>
+<span id="cb165-180"><a href="#cb165-180"></a></span>
+<span id="cb165-181"><a href="#cb165-181"></a><span class="fu">class</span>(y[<span class="fu">c</span>(<span class="dv">1</span>)]) <span class="co"># result is a list</span></span>
+<span id="cb165-182"><a href="#cb165-182"></a><span class="in">```</span></span>
+<span id="cb165-183"><a href="#cb165-183"></a></span>
+<span id="cb165-184"><a href="#cb165-184"></a>By repeating a position, you can actually make a longer output than input, making the term "subsetting" a bit of a misnomer.</span>
+<span id="cb165-185"><a href="#cb165-185"></a></span>
+<span id="cb165-188"><a href="#cb165-188"></a><span class="in">```{r}</span></span>
+<span id="cb165-189"><a href="#cb165-189"></a><span class="co"># Vector</span></span>
+<span id="cb165-190"><a href="#cb165-190"></a>x[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)]</span>
+<span id="cb165-191"><a href="#cb165-191"></a></span>
+<span id="cb165-192"><a href="#cb165-192"></a><span class="co"># List</span></span>
+<span id="cb165-193"><a href="#cb165-193"></a>y[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)]</span>
+<span id="cb165-194"><a href="#cb165-194"></a><span class="in">```</span></span>
+<span id="cb165-195"><a href="#cb165-195"></a></span>
+<span id="cb165-196"><a href="#cb165-196"></a></span>
+<span id="cb165-197"><a href="#cb165-197"></a><span class="fu">### Negative Integers</span></span>
+<span id="cb165-198"><a href="#cb165-198"></a></span>
+<span id="cb165-199"><a href="#cb165-199"></a>Negative values drop the elements at the specified positions:</span>
+<span id="cb165-200"><a href="#cb165-200"></a></span>
+<span id="cb165-203"><a href="#cb165-203"></a><span class="in">```{r}</span></span>
+<span id="cb165-204"><a href="#cb165-204"></a><span class="co"># Vector</span></span>
+<span id="cb165-205"><a href="#cb165-205"></a>x[<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">3</span>, <span class="sc">-</span><span class="dv">5</span>)]</span>
+<span id="cb165-206"><a href="#cb165-206"></a></span>
+<span id="cb165-207"><a href="#cb165-207"></a><span class="co"># List</span></span>
+<span id="cb165-208"><a href="#cb165-208"></a>y[<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>)]</span>
+<span id="cb165-209"><a href="#cb165-209"></a></span>
+<span id="cb165-210"><a href="#cb165-210"></a><span class="in">```</span></span>
+<span id="cb165-211"><a href="#cb165-211"></a></span>
+<span id="cb165-212"><a href="#cb165-212"></a></span>
+<span id="cb165-213"><a href="#cb165-213"></a><span class="fu">### Logical Vector</span></span>
+<span id="cb165-214"><a href="#cb165-214"></a></span>
+<span id="cb165-215"><a href="#cb165-215"></a>Subsetting with a logical vector only keeps values corresponding to <span class="in">`TRUE`</span>. This is generally used with comparison functions and operators.</span>
+<span id="cb165-216"><a href="#cb165-216"></a></span>
+<span id="cb165-219"><a href="#cb165-219"></a><span class="in">```{r}</span></span>
+<span id="cb165-220"><a href="#cb165-220"></a><span class="co"># Vector</span></span>
+<span id="cb165-221"><a href="#cb165-221"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">3</span>, <span class="cn">NA</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">1</span>, <span class="cn">NA</span>)</span>
+<span id="cb165-222"><a href="#cb165-222"></a></span>
+<span id="cb165-223"><a href="#cb165-223"></a><span class="co"># All non-missing values of x</span></span>
+<span id="cb165-224"><a href="#cb165-224"></a>x[<span class="sc">!</span><span class="fu">is.na</span>(x)]</span>
+<span id="cb165-225"><a href="#cb165-225"></a></span>
+<span id="cb165-226"><a href="#cb165-226"></a><span class="co"># All values greater than 5, with NAs</span></span>
+<span id="cb165-227"><a href="#cb165-227"></a>x[x <span class="sc">&gt;</span> <span class="dv">5</span>]</span>
+<span id="cb165-228"><a href="#cb165-228"></a></span>
+<span id="cb165-229"><a href="#cb165-229"></a><span class="co"># All non-missing values greater than 5</span></span>
+<span id="cb165-230"><a href="#cb165-230"></a>x[x <span class="sc">&gt;</span> <span class="dv">5</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(x)]</span>
+<span id="cb165-231"><a href="#cb165-231"></a><span class="in">```</span></span>
+<span id="cb165-232"><a href="#cb165-232"></a></span>
+<span id="cb165-233"><a href="#cb165-233"></a>Unlike <span class="in">`filter()`</span>, <span class="in">`NA`</span> indices will be included in the output as <span class="in">`NA`</span>s unless you explicitly remove them (<span class="in">`filter()`</span> removes instances of missing values by default.</span>
+<span id="cb165-234"><a href="#cb165-234"></a></span>
+<span id="cb165-237"><a href="#cb165-237"></a><span class="in">```{r}</span></span>
+<span id="cb165-238"><a href="#cb165-238"></a><span class="co"># Compare with filter</span></span>
+<span id="cb165-239"><a href="#cb165-239"></a><span class="fu">filter</span>(<span class="fu">tibble</span>(<span class="at">x =</span> x), x <span class="sc">&gt;</span> <span class="dv">5</span>)</span>
+<span id="cb165-240"><a href="#cb165-240"></a><span class="in">```</span></span>
+<span id="cb165-241"><a href="#cb165-241"></a></span>
+<span id="cb165-244"><a href="#cb165-244"></a><span class="in">```{r}</span></span>
+<span id="cb165-245"><a href="#cb165-245"></a><span class="co"># List</span></span>
+<span id="cb165-246"><a href="#cb165-246"></a>y[<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>)]</span>
+<span id="cb165-247"><a href="#cb165-247"></a>y[y <span class="sc">|&gt;</span> <span class="fu">map_lgl</span>(<span class="sc">~</span> <span class="fu">is.numeric</span>(.x))] <span class="co"># example of a map function!</span></span>
+<span id="cb165-248"><a href="#cb165-248"></a>y[y <span class="sc">|&gt;</span> <span class="fu">map_lgl</span>(<span class="sc">~</span> <span class="fu">is.character</span>(.x))]</span>
+<span id="cb165-249"><a href="#cb165-249"></a><span class="in">```</span></span>
+<span id="cb165-250"><a href="#cb165-250"></a></span>
+<span id="cb165-251"><a href="#cb165-251"></a></span>
+<span id="cb165-252"><a href="#cb165-252"></a><span class="fu">### Character Vector</span></span>
+<span id="cb165-253"><a href="#cb165-253"></a></span>
+<span id="cb165-254"><a href="#cb165-254"></a>If you have a named vector or list, you can subset it with a character vector:</span>
+<span id="cb165-255"><a href="#cb165-255"></a></span>
+<span id="cb165-258"><a href="#cb165-258"></a><span class="in">```{r}</span></span>
+<span id="cb165-259"><a href="#cb165-259"></a><span class="co"># Named Vector</span></span>
+<span id="cb165-260"><a href="#cb165-260"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">abc =</span> <span class="dv">1</span>, <span class="at">def =</span> <span class="dv">2</span>, <span class="at">xyz =</span> <span class="dv">5</span>)</span>
+<span id="cb165-261"><a href="#cb165-261"></a>x[<span class="fu">c</span>(<span class="st">"xyz"</span>, <span class="st">"def"</span>)]</span>
+<span id="cb165-262"><a href="#cb165-262"></a>x[<span class="fu">c</span>(<span class="st">"xyz"</span>,<span class="st">"xyz"</span>,<span class="st">"xyz"</span>, <span class="st">"def"</span>)]</span>
+<span id="cb165-263"><a href="#cb165-263"></a></span>
+<span id="cb165-264"><a href="#cb165-264"></a><span class="co">#Named List</span></span>
+<span id="cb165-265"><a href="#cb165-265"></a>y[<span class="fu">c</span>(<span class="st">'a'</span>,<span class="st">'a'</span>,<span class="st">'c'</span>)]</span>
+<span id="cb165-266"><a href="#cb165-266"></a><span class="in">```</span></span>
+<span id="cb165-267"><a href="#cb165-267"></a></span>
+<span id="cb165-268"><a href="#cb165-268"></a>As with subsetting with positive integers, you can use a character vector to duplicate individual entries.</span>
+<span id="cb165-269"><a href="#cb165-269"></a></span>
+<span id="cb165-270"><a href="#cb165-270"></a></span>
+<span id="cb165-271"><a href="#cb165-271"></a><span class="fu">### Replace</span></span>
+<span id="cb165-272"><a href="#cb165-272"></a></span>
+<span id="cb165-273"><a href="#cb165-273"></a>**Be very wary of vector recycling when doing this!** The number of things that you're inserting should either be 1 or the size of the <span class="in">`x[i]`</span> subset.</span>
+<span id="cb165-274"><a href="#cb165-274"></a></span>
+<span id="cb165-277"><a href="#cb165-277"></a><span class="in">```{r}</span></span>
+<span id="cb165-278"><a href="#cb165-278"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">first =</span> <span class="st">"one"</span>, <span class="at">second =</span> <span class="st">"two"</span>, <span class="at">third =</span> <span class="st">"three"</span>, <span class="at">fourth =</span> <span class="st">"four"</span>)</span>
+<span id="cb165-279"><a href="#cb165-279"></a>x</span>
+<span id="cb165-280"><a href="#cb165-280"></a><span class="in">```</span></span>
+<span id="cb165-281"><a href="#cb165-281"></a></span>
+<span id="cb165-284"><a href="#cb165-284"></a><span class="in">```{r}</span></span>
+<span id="cb165-285"><a href="#cb165-285"></a>x[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)] <span class="ot">&lt;-</span> <span class="st">"new"</span> <span class="co"># Replacement length is 1</span></span>
+<span id="cb165-286"><a href="#cb165-286"></a>x</span>
+<span id="cb165-287"><a href="#cb165-287"></a><span class="in">```</span></span>
+<span id="cb165-288"><a href="#cb165-288"></a></span>
+<span id="cb165-291"><a href="#cb165-291"></a><span class="in">```{r}</span></span>
+<span id="cb165-292"><a href="#cb165-292"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">first =</span> <span class="st">"one"</span>, <span class="at">second =</span> <span class="st">"two"</span>, <span class="at">third =</span> <span class="st">"three"</span>, <span class="at">fourth =</span> <span class="st">"four"</span>)</span>
+<span id="cb165-293"><a href="#cb165-293"></a>x[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"new1"</span>, <span class="st">"new2"</span>) <span class="co"># Replacement length is 2, and length of subset is 2</span></span>
+<span id="cb165-294"><a href="#cb165-294"></a>x</span>
+<span id="cb165-295"><a href="#cb165-295"></a><span class="in">```</span></span>
+<span id="cb165-296"><a href="#cb165-296"></a></span>
+<span id="cb165-299"><a href="#cb165-299"></a><span class="in">```{r}</span></span>
+<span id="cb165-300"><a href="#cb165-300"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">first =</span> <span class="st">"one"</span>, <span class="at">second =</span> <span class="st">"two"</span>, <span class="at">third =</span> <span class="st">"three"</span>, <span class="at">fourth =</span> <span class="st">"four"</span>)</span>
+<span id="cb165-301"><a href="#cb165-301"></a>x[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>)] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"new1"</span>, <span class="st">"new2"</span>) <span class="co"># BAD! Replacement length is 2, and length of subset is 3</span></span>
+<span id="cb165-302"><a href="#cb165-302"></a>x</span>
+<span id="cb165-303"><a href="#cb165-303"></a><span class="in">```</span></span>
+<span id="cb165-304"><a href="#cb165-304"></a></span>
+<span id="cb165-307"><a href="#cb165-307"></a><span class="in">```{r}</span></span>
+<span id="cb165-308"><a href="#cb165-308"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">first =</span> <span class="st">"one"</span>, <span class="at">second =</span> <span class="st">"two"</span>, <span class="at">third =</span> <span class="st">"three"</span>, <span class="at">fourth =</span> <span class="st">"four"</span>)</span>
+<span id="cb165-309"><a href="#cb165-309"></a>x[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"new1"</span>, <span class="st">"new2"</span>, <span class="st">"new3"</span>) <span class="co"># BAD! Replacement length is 3, and length of subset is 2</span></span>
+<span id="cb165-310"><a href="#cb165-310"></a>x</span>
+<span id="cb165-311"><a href="#cb165-311"></a><span class="in">```</span></span>
+<span id="cb165-312"><a href="#cb165-312"></a></span>
+<span id="cb165-313"><a href="#cb165-313"></a></span>
+<span id="cb165-314"><a href="#cb165-314"></a><span class="fu">### Matrices &amp; Data Frames</span></span>
+<span id="cb165-315"><a href="#cb165-315"></a></span>
+<span id="cb165-316"><a href="#cb165-316"></a>All of the above subsetting options can be used for subsetting matrices and data frames (named list of elements of equal length).</span>
+<span id="cb165-317"><a href="#cb165-317"></a></span>
+<span id="cb165-320"><a href="#cb165-320"></a><span class="in">```{r}</span></span>
+<span id="cb165-321"><a href="#cb165-321"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
+<span id="cb165-322"><a href="#cb165-322"></a>m</span>
+<span id="cb165-323"><a href="#cb165-323"></a></span>
+<span id="cb165-324"><a href="#cb165-324"></a>m[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>] <span class="co"># Matrix = vector (down the columns) with dimensions</span></span>
+<span id="cb165-325"><a href="#cb165-325"></a><span class="in">```</span></span>
+<span id="cb165-326"><a href="#cb165-326"></a></span>
+<span id="cb165-327"><a href="#cb165-327"></a>You can use a comma to subset by rows and columns separately.</span>
+<span id="cb165-328"><a href="#cb165-328"></a></span>
+<span id="cb165-331"><a href="#cb165-331"></a><span class="in">```{r}</span></span>
+<span id="cb165-332"><a href="#cb165-332"></a>m[<span class="dv">1</span>,] <span class="co"># Get 1st row</span></span>
+<span id="cb165-333"><a href="#cb165-333"></a>m[,<span class="dv">1</span>] <span class="co"># Get 1st column</span></span>
+<span id="cb165-334"><a href="#cb165-334"></a><span class="in">```</span></span>
+<span id="cb165-335"><a href="#cb165-335"></a></span>
+<span id="cb165-338"><a href="#cb165-338"></a><span class="in">```{r}</span></span>
+<span id="cb165-339"><a href="#cb165-339"></a>m[<span class="dv">1</span>,<span class="dv">3</span>] <span class="co"># Get 1st row and 3rd column</span></span>
+<span id="cb165-340"><a href="#cb165-340"></a></span>
+<span id="cb165-341"><a href="#cb165-341"></a>m[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>),] <span class="co"># Get 1st and 3rd rows</span></span>
+<span id="cb165-342"><a href="#cb165-342"></a>m[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)] <span class="co"># Get 1st and 3rd columns</span></span>
+<span id="cb165-343"><a href="#cb165-343"></a>m[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>),<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)] <span class="co"># Get 1st and 3rd rows and 1st and 3rd columns</span></span>
+<span id="cb165-344"><a href="#cb165-344"></a></span>
+<span id="cb165-345"><a href="#cb165-345"></a>m[<span class="sc">-</span><span class="dv">1</span>,] <span class="co"># Get all rows except 1st</span></span>
+<span id="cb165-346"><a href="#cb165-346"></a>m[<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>),] <span class="co"># Get the 1st row via a logical</span></span>
+<span id="cb165-347"><a href="#cb165-347"></a></span>
+<span id="cb165-348"><a href="#cb165-348"></a></span>
+<span id="cb165-349"><a href="#cb165-349"></a><span class="co"># Add row and column names to the matrix</span></span>
+<span id="cb165-350"><a href="#cb165-350"></a><span class="fu">colnames</span>(m) <span class="ot">&lt;-</span> <span class="fu">str_c</span>(<span class="st">"col"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span>
+<span id="cb165-351"><a href="#cb165-351"></a><span class="fu">rownames</span>(m) <span class="ot">&lt;-</span> <span class="fu">str_c</span>(<span class="st">"row"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
+<span id="cb165-352"><a href="#cb165-352"></a>m[<span class="st">"row1"</span>,]</span>
+<span id="cb165-353"><a href="#cb165-353"></a></span>
+<span id="cb165-354"><a href="#cb165-354"></a><span class="in">```</span></span>
+<span id="cb165-355"><a href="#cb165-355"></a></span>
+<span id="cb165-356"><a href="#cb165-356"></a></span>
+<span id="cb165-357"><a href="#cb165-357"></a><span class="fu">## Select a Single Element with `$` and `[[`</span></span>
+<span id="cb165-358"><a href="#cb165-358"></a></span>
+<span id="cb165-359"><a href="#cb165-359"></a>We can use <span class="in">`$`</span> and <span class="in">`[[`</span> to extract a single column of a data frame or an element within a list. This **breaks out of the original class structure**.</span>
+<span id="cb165-360"><a href="#cb165-360"></a></span>
+<span id="cb165-363"><a href="#cb165-363"></a><span class="in">```{r}</span></span>
+<span id="cb165-364"><a href="#cb165-364"></a>mtcars</span>
+<span id="cb165-365"><a href="#cb165-365"></a>mtcars<span class="sc">$</span>mpg</span>
+<span id="cb165-366"><a href="#cb165-366"></a>mtcars[[<span class="st">"mpg"</span>]]</span>
+<span id="cb165-367"><a href="#cb165-367"></a>mtcars <span class="sc">|&gt;</span> <span class="fu">pull</span>(mpg)</span>
+<span id="cb165-368"><a href="#cb165-368"></a><span class="in">```</span></span>
+<span id="cb165-369"><a href="#cb165-369"></a></span>
+<span id="cb165-370"><a href="#cb165-370"></a>For each of the tasks below, write a function that take a vector as input returns the desired output.</span>
+<span id="cb165-371"><a href="#cb165-371"></a></span>
+<span id="cb165-372"><a href="#cb165-372"></a></span>
+<span id="cb165-373"><a href="#cb165-373"></a><span class="fu">## ✏️ Get Even Positions</span></span>
+<span id="cb165-374"><a href="#cb165-374"></a></span>
+<span id="cb165-375"><a href="#cb165-375"></a>Return the elements at even-numbered positions. (Hint: use the <span class="in">`seq()`</span> function.)</span>
+<span id="cb165-376"><a href="#cb165-376"></a></span>
+<span id="cb165-379"><a href="#cb165-379"></a><span class="in">```{r}</span></span>
+<span id="cb165-380"><a href="#cb165-380"></a>get_even_positions <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb165-381"><a href="#cb165-381"></a>  <span class="cf">if</span> (<span class="fu">length</span>(x) <span class="sc">&lt;</span> <span class="dv">2</span>) <span class="fu">return</span>(x[<span class="dv">0</span>])</span>
+<span id="cb165-382"><a href="#cb165-382"></a>  x[<span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">2</span>, <span class="at">to =</span> <span class="fu">length</span>(x), <span class="at">by =</span> <span class="dv">2</span>)]</span>
+<span id="cb165-383"><a href="#cb165-383"></a>}</span>
+<span id="cb165-384"><a href="#cb165-384"></a><span class="fu">get_even_positions</span>(<span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">60</span>))</span>
+<span id="cb165-385"><a href="#cb165-385"></a><span class="in">```</span></span>
+<span id="cb165-386"><a href="#cb165-386"></a></span>
+<span id="cb165-387"><a href="#cb165-387"></a></span>
+<span id="cb165-388"><a href="#cb165-388"></a><span class="fu">## ✏️ Drop Last Element</span></span>
+<span id="cb165-389"><a href="#cb165-389"></a></span>
+<span id="cb165-390"><a href="#cb165-390"></a>Return every element except the last value.</span>
+<span id="cb165-391"><a href="#cb165-391"></a></span>
+<span id="cb165-394"><a href="#cb165-394"></a><span class="in">```{r}</span></span>
+<span id="cb165-395"><a href="#cb165-395"></a>drop_last <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb165-396"><a href="#cb165-396"></a>  <span class="cf">if</span> (<span class="fu">length</span>(x) <span class="sc">==</span> <span class="dv">0</span>) <span class="fu">return</span>(x)</span>
+<span id="cb165-397"><a href="#cb165-397"></a>  x[<span class="sc">-</span><span class="fu">length</span>(x)]</span>
+<span id="cb165-398"><a href="#cb165-398"></a>}</span>
+<span id="cb165-399"><a href="#cb165-399"></a><span class="fu">drop_last</span>(<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>))</span>
+<span id="cb165-400"><a href="#cb165-400"></a><span class="in">```</span></span>
+<span id="cb165-401"><a href="#cb165-401"></a></span>
+<span id="cb165-402"><a href="#cb165-402"></a></span>
+<span id="cb165-403"><a href="#cb165-403"></a><span class="fu">## ✏️ Keep Even Values</span></span>
+<span id="cb165-404"><a href="#cb165-404"></a></span>
+<span id="cb165-405"><a href="#cb165-405"></a>Return only even values (and no missing values).</span>
+<span id="cb165-406"><a href="#cb165-406"></a></span>
+<span id="cb165-409"><a href="#cb165-409"></a><span class="in">```{r}</span></span>
+<span id="cb165-410"><a href="#cb165-410"></a>keep_even_values <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb165-411"><a href="#cb165-411"></a>  x[<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>]</span>
+<span id="cb165-412"><a href="#cb165-412"></a>}</span>
+<span id="cb165-413"><a href="#cb165-413"></a><span class="fu">keep_even_values</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="cn">NA</span>, <span class="dv">8</span>))</span>
+<span id="cb165-414"><a href="#cb165-414"></a><span class="in">```</span></span>
+<span id="cb165-415"><a href="#cb165-415"></a></span>
+<span id="cb165-416"><a href="#cb165-416"></a></span>
+<span id="cb165-417"><a href="#cb165-417"></a><span class="fu">## Explore Structure with `str()`</span></span>
+<span id="cb165-418"><a href="#cb165-418"></a></span>
+<span id="cb165-419"><a href="#cb165-419"></a>The <span class="in">`str()`</span> function shows you the structure of an object and is useful for exploring model objects and objects created from packages that are new to you.</span>
+<span id="cb165-420"><a href="#cb165-420"></a></span>
+<span id="cb165-421"><a href="#cb165-421"></a>In the output of <span class="in">`str()`</span> dollar signs indicate named components of a list that can be extracted via <span class="in">`$`</span> or <span class="in">`[[`</span>.</span>
+<span id="cb165-422"><a href="#cb165-422"></a></span>
+<span id="cb165-423"><a href="#cb165-423"></a>We see that both <span class="in">`mod`</span> and <span class="in">`mod_summ`</span> are lists, so we can also interactively view these objects with <span class="in">`View(mod)`</span> and <span class="in">`View(mod_summ)`</span> in the Console.</span>
+<span id="cb165-424"><a href="#cb165-424"></a></span>
+<span id="cb165-427"><a href="#cb165-427"></a><span class="in">```{r}</span></span>
+<span id="cb165-428"><a href="#cb165-428"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> hp <span class="sc">+</span> wt, <span class="at">data =</span> mtcars)</span>
+<span id="cb165-429"><a href="#cb165-429"></a>mod_summ <span class="ot">&lt;-</span> <span class="fu">summary</span>(mod)</span>
+<span id="cb165-430"><a href="#cb165-430"></a></span>
+<span id="cb165-431"><a href="#cb165-431"></a><span class="fu">str</span>(mod)</span>
+<span id="cb165-432"><a href="#cb165-432"></a><span class="fu">str</span>(mod_summ)</span>
+<span id="cb165-433"><a href="#cb165-433"></a><span class="in">```</span></span>
+<span id="cb165-436"><a href="#cb165-436"></a><span class="in">```{r}</span></span>
+<span id="cb165-437"><a href="#cb165-437"></a>mod<span class="sc">$</span>coefficients</span>
+<span id="cb165-438"><a href="#cb165-438"></a><span class="in">```</span></span>
+<span id="cb165-439"><a href="#cb165-439"></a></span>
+<span id="cb165-440"><a href="#cb165-440"></a></span>
+<span id="cb165-441"><a href="#cb165-441"></a><span class="fu">## ✏️ Extract CI</span></span>
+<span id="cb165-442"><a href="#cb165-442"></a></span>
+<span id="cb165-443"><a href="#cb165-443"></a>Write a function that fits a linear model on the dataset using the given outcome and predictor variables and return a data frame (<span class="in">`tibble`</span>) with the coefficient estimate and CI for the predictor of interest. It should take the following inputs:</span>
+<span id="cb165-444"><a href="#cb165-444"></a></span>
+<span id="cb165-445"><a href="#cb165-445"></a><span class="ss">- </span><span class="in">`data`</span>: A dataset</span>
+<span id="cb165-446"><a href="#cb165-446"></a><span class="ss">- </span><span class="in">`yvar`</span>: Outcome variable to be used in a linear model (a length-1 character vector)</span>
+<span id="cb165-447"><a href="#cb165-447"></a><span class="ss">- </span><span class="in">`preds`</span>: Predictor variables to be used in a linear model (a character vector)</span>
+<span id="cb165-448"><a href="#cb165-448"></a><span class="ss">- </span><span class="in">`pred_of_interest`</span>: The variable whose coefficient estimate and confidence interval are of interest (a length-1 character vector and should be one of <span class="in">`preds`</span>)</span>
+<span id="cb165-449"><a href="#cb165-449"></a></span>
+<span id="cb165-450"><a href="#cb165-450"></a>Test your function on the <span class="in">`mtcars`</span> dataset.</span>
+<span id="cb165-451"><a href="#cb165-451"></a></span>
+<span id="cb165-452"><a href="#cb165-452"></a>Development tip: As you develop, it will help to create objects for the arguments so that you can see what output looks like interactively:</span>
+<span id="cb165-453"><a href="#cb165-453"></a></span>
+<span id="cb165-456"><a href="#cb165-456"></a><span class="in">```{r}</span></span>
+<span id="cb165-457"><a href="#cb165-457"></a>data <span class="ot">&lt;-</span> mtcars</span>
+<span id="cb165-458"><a href="#cb165-458"></a>yvar <span class="ot">&lt;-</span> <span class="st">"mpg"</span></span>
+<span id="cb165-459"><a href="#cb165-459"></a>preds <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"hp"</span>, <span class="st">"wt"</span>)</span>
+<span id="cb165-460"><a href="#cb165-460"></a>pred_of_interest <span class="ot">&lt;-</span> <span class="st">"hp"</span></span>
+<span id="cb165-461"><a href="#cb165-461"></a><span class="in">```</span></span>
+<span id="cb165-462"><a href="#cb165-462"></a></span>
+<span id="cb165-463"><a href="#cb165-463"></a>When you're done developing your function, remove these objects to declutter your environment by entering <span class="in">`rm(data, yvar, preds, pred_of_interest)`</span> in the Console.</span>
+<span id="cb165-464"><a href="#cb165-464"></a></span>
+<span id="cb165-467"><a href="#cb165-467"></a><span class="in">```{r}</span></span>
+<span id="cb165-468"><a href="#cb165-468"></a>fit_mod_and_extract <span class="ot">&lt;-</span> <span class="cf">function</span>(data, yvar, preds, pred_of_interest) {</span>
+<span id="cb165-469"><a href="#cb165-469"></a>    <span class="co"># Use str_c to create a string (formula_str) that looks like "yvar ~ pred1 + pred2"</span></span>
+<span id="cb165-470"><a href="#cb165-470"></a>    <span class="co"># Look at the documentation for a helpful argument</span></span>
+<span id="cb165-471"><a href="#cb165-471"></a>    mod_formula_str <span class="ot">&lt;-</span> <span class="fu">str_c</span>(yvar, <span class="st">" ~ "</span>, <span class="fu">str_c</span>(preds, <span class="at">collapse =</span> <span class="st">" + "</span>))</span>
+<span id="cb165-472"><a href="#cb165-472"></a>    mod_form <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(mod_formula_str)</span>
+<span id="cb165-473"><a href="#cb165-473"></a>    <span class="co"># Fit a linear model using the constructed formula and given data</span></span>
+<span id="cb165-474"><a href="#cb165-474"></a>    mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(mod_form, <span class="at">data =</span> data)</span>
+<span id="cb165-475"><a href="#cb165-475"></a></span>
+<span id="cb165-476"><a href="#cb165-476"></a>    <span class="co"># Obtain 95% confidence interval</span></span>
+<span id="cb165-477"><a href="#cb165-477"></a>    ci <span class="ot">&lt;-</span> <span class="fu">confint</span>(mod, <span class="at">level =</span> <span class="fl">0.95</span>)</span>
+<span id="cb165-478"><a href="#cb165-478"></a></span>
+<span id="cb165-479"><a href="#cb165-479"></a>    <span class="co"># Return the coefficient estimate and CI for the predictor of interest</span></span>
+<span id="cb165-480"><a href="#cb165-480"></a>    <span class="fu">tibble</span>(<span class="at">which_pred =</span> pred_of_interest,</span>
+<span id="cb165-481"><a href="#cb165-481"></a>        <span class="at">estimate =</span> mod<span class="sc">$</span>coefficients[pred_of_interest],</span>
+<span id="cb165-482"><a href="#cb165-482"></a>        <span class="at">ci_lower =</span> ci[pred_of_interest, <span class="st">"2.5 %"</span>],</span>
+<span id="cb165-483"><a href="#cb165-483"></a>        <span class="at">ci_upper =</span> ci[pred_of_interest, <span class="st">"97.5 %"</span>])</span>
+<span id="cb165-484"><a href="#cb165-484"></a>}</span>
+<span id="cb165-485"><a href="#cb165-485"></a><span class="in">```</span></span>
+<span id="cb165-486"><a href="#cb165-486"></a></span>
+<span id="cb165-489"><a href="#cb165-489"></a><span class="in">```{r}</span></span>
+<span id="cb165-490"><a href="#cb165-490"></a><span class="fu">fit_mod_and_extract</span>(<span class="at">data =</span> mtcars, <span class="at">yvar =</span> <span class="st">"mpg"</span>, <span class="at">preds =</span> <span class="fu">c</span>(<span class="st">"hp"</span>, <span class="st">"wt"</span>), <span class="at">pred_of_interest =</span> <span class="st">"hp"</span>)</span>
+<span id="cb165-491"><a href="#cb165-491"></a><span class="in">```</span></span>
+<span id="cb165-492"><a href="#cb165-492"></a></span>
+<span id="cb165-493"><a href="#cb165-493"></a></span>
+<span id="cb165-494"><a href="#cb165-494"></a><span class="fu">## Debugging Strategies</span></span>
+<span id="cb165-495"><a href="#cb165-495"></a></span>
+<span id="cb165-496"><a href="#cb165-496"></a>When writing functions and working with functions that you wrote, you may encounter errors that are hard to figure out. Here are some strategies to help you debug the issues you encounter.</span>
+<span id="cb165-497"><a href="#cb165-497"></a></span>
+<span id="cb165-498"><a href="#cb165-498"></a></span>
+<span id="cb165-499"><a href="#cb165-499"></a><span class="fu">### `print()` &amp; `cat()`</span></span>
+<span id="cb165-500"><a href="#cb165-500"></a></span>
+<span id="cb165-501"><a href="#cb165-501"></a>Use <span class="in">`print()`</span> and <span class="in">`cat()`</span> to print out intermediate results and messages within a function, eg, <span class="in">`print(x)`</span>, <span class="in">`cat("The value of x is", x, "\n")`</span></span>
+<span id="cb165-502"><a href="#cb165-502"></a></span>
+<span id="cb165-505"><a href="#cb165-505"></a><span class="in">```{r}</span></span>
+<span id="cb165-506"><a href="#cb165-506"></a>My_own_sum <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb165-507"><a href="#cb165-507"></a>  <span class="fu">print</span>(x)</span>
+<span id="cb165-508"><a href="#cb165-508"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(x))</span>
+<span id="cb165-509"><a href="#cb165-509"></a>}</span>
+<span id="cb165-510"><a href="#cb165-510"></a><span class="fu">My_own_sum</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb165-511"><a href="#cb165-511"></a></span>
+<span id="cb165-512"><a href="#cb165-512"></a>My_own_sum <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb165-513"><a href="#cb165-513"></a>  <span class="fu">cat</span>(<span class="st">"The value of x is"</span>, x, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb165-514"><a href="#cb165-514"></a>  <span class="fu">cat</span>(<span class="st">"The class of x is"</span>, <span class="fu">class</span>(x), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb165-515"><a href="#cb165-515"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(x))</span>
+<span id="cb165-516"><a href="#cb165-516"></a>}</span>
+<span id="cb165-517"><a href="#cb165-517"></a></span>
+<span id="cb165-518"><a href="#cb165-518"></a><span class="fu">My_own_sum</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb165-519"><a href="#cb165-519"></a><span class="in">```</span></span>
+<span id="cb165-520"><a href="#cb165-520"></a></span>
+<span id="cb165-521"><a href="#cb165-521"></a></span>
+<span id="cb165-522"><a href="#cb165-522"></a><span class="fu">### `browser()`</span></span>
+<span id="cb165-523"><a href="#cb165-523"></a></span>
+<span id="cb165-524"><a href="#cb165-524"></a>Use <span class="in">`browser()`</span> to pause the function at a certain point and interactively explore the environment. Press "Next" or type <span class="in">`n`</span> to run the next line of code. Type the name of an object in the Console to see its value at this point in the function. You can type <span class="in">`Q`</span> to quit the browser.</span>
+<span id="cb165-525"><a href="#cb165-525"></a></span>
+<span id="cb165-528"><a href="#cb165-528"></a><span class="in">```{r}</span></span>
+<span id="cb165-529"><a href="#cb165-529"></a><span class="co">#| eval: false</span></span>
+<span id="cb165-530"><a href="#cb165-530"></a></span>
+<span id="cb165-531"><a href="#cb165-531"></a>fit_mod_and_extract <span class="ot">&lt;-</span> <span class="cf">function</span>(data, yvar, preds, pred_of_interest) {</span>
+<span id="cb165-532"><a href="#cb165-532"></a>    <span class="co"># Use str_c to create a string (formula_str) that looks like "yvar ~ pred1 + pred2"</span></span>
+<span id="cb165-533"><a href="#cb165-533"></a>    <span class="co"># Look at the documentation for a helpful argument</span></span>
+<span id="cb165-534"><a href="#cb165-534"></a>    mod_formula_str <span class="ot">&lt;-</span> <span class="fu">str_c</span>(yvar, <span class="st">"~"</span>, <span class="fu">str_c</span>(preds, <span class="at">collapse =</span> <span class="st">"+"</span>))</span>
+<span id="cb165-535"><a href="#cb165-535"></a>    mod_form <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(mod_formula_str)</span>
+<span id="cb165-536"><a href="#cb165-536"></a></span>
+<span id="cb165-537"><a href="#cb165-537"></a>    <span class="co"># Add browser() to where in the function you'd like to pause and interact in the function environment using the Console</span></span>
+<span id="cb165-538"><a href="#cb165-538"></a>    <span class="fu">browser</span>()</span>
+<span id="cb165-539"><a href="#cb165-539"></a></span>
+<span id="cb165-540"><a href="#cb165-540"></a>    <span class="co"># Fit a linear model using the constructed formula and given data</span></span>
+<span id="cb165-541"><a href="#cb165-541"></a>    mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(mod_form, <span class="at">data =</span> data)</span>
+<span id="cb165-542"><a href="#cb165-542"></a></span>
+<span id="cb165-543"><a href="#cb165-543"></a>    <span class="co"># Obtain 95% confidence interval</span></span>
+<span id="cb165-544"><a href="#cb165-544"></a>    ci <span class="ot">&lt;-</span> <span class="fu">confint</span>(mod, <span class="at">level =</span> <span class="fl">0.95</span>)</span>
+<span id="cb165-545"><a href="#cb165-545"></a></span>
+<span id="cb165-546"><a href="#cb165-546"></a>    <span class="co"># Return the coefficient estimate and CI for the predictor of interest</span></span>
+<span id="cb165-547"><a href="#cb165-547"></a>    <span class="fu">tibble</span>(</span>
+<span id="cb165-548"><a href="#cb165-548"></a>        <span class="at">which_pred =</span> pred_of_interest,</span>
+<span id="cb165-549"><a href="#cb165-549"></a>        <span class="at">estimate =</span> mod<span class="sc">$</span>coefficients[pred_of_interest],</span>
+<span id="cb165-550"><a href="#cb165-550"></a>        <span class="at">ci_lower =</span> ci[pred_of_interest, <span class="st">"2.5 %"</span>],</span>
+<span id="cb165-551"><a href="#cb165-551"></a>        <span class="at">ci_upper =</span> ci[pred_of_interest, <span class="st">"97.5 %"</span>]</span>
+<span id="cb165-552"><a href="#cb165-552"></a>    )</span>
+<span id="cb165-553"><a href="#cb165-553"></a>}</span>
+<span id="cb165-554"><a href="#cb165-554"></a></span>
+<span id="cb165-555"><a href="#cb165-555"></a></span>
+<span id="cb165-556"><a href="#cb165-556"></a><span class="fu">fit_mod_and_extract</span>(<span class="at">data =</span> mtcars, <span class="at">yvar =</span> <span class="st">"mpg"</span>, <span class="at">preds =</span> <span class="fu">c</span>(<span class="st">"hp"</span>, <span class="st">"wt"</span>), <span class="at">pred_of_interest =</span> <span class="st">"hp"</span>)</span>
+<span id="cb165-557"><a href="#cb165-557"></a><span class="in">```</span></span>
+<span id="cb165-558"><a href="#cb165-558"></a></span>
+<span id="cb165-559"><a href="#cb165-559"></a></span>
+<span id="cb165-560"><a href="#cb165-560"></a><span class="fu">### `try()`</span></span>
+<span id="cb165-561"><a href="#cb165-561"></a></span>
+<span id="cb165-562"><a href="#cb165-562"></a>Use <span class="in">`try()`</span> to catch errors and print out a message when an error occurs.</span>
+<span id="cb165-563"><a href="#cb165-563"></a></span>
+<span id="cb165-566"><a href="#cb165-566"></a><span class="in">```{r}</span></span>
+<span id="cb165-567"><a href="#cb165-567"></a><span class="co">#| error: true</span></span>
+<span id="cb165-568"><a href="#cb165-568"></a></span>
+<span id="cb165-569"><a href="#cb165-569"></a>My_own_sum <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb165-570"><a href="#cb165-570"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(x))</span>
+<span id="cb165-571"><a href="#cb165-571"></a>}</span>
+<span id="cb165-572"><a href="#cb165-572"></a></span>
+<span id="cb165-573"><a href="#cb165-573"></a>results <span class="ot">&lt;-</span> <span class="fu">My_own_sum</span>(<span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>))</span>
+<span id="cb165-574"><a href="#cb165-574"></a><span class="fu">class</span>(results)</span>
+<span id="cb165-575"><a href="#cb165-575"></a></span>
+<span id="cb165-576"><a href="#cb165-576"></a>results <span class="ot">&lt;-</span> <span class="fu">try</span>(<span class="fu">My_own_sum</span>(<span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>)), <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb165-577"><a href="#cb165-577"></a><span class="fu">class</span>(results)</span>
+<span id="cb165-578"><a href="#cb165-578"></a></span>
+<span id="cb165-579"><a href="#cb165-579"></a><span class="in">```</span></span>
+<span id="cb165-580"><a href="#cb165-580"></a></span>
+<span id="cb165-581"><a href="#cb165-581"></a></span>
+<span id="cb165-582"><a href="#cb165-582"></a><span class="fu">### `stop()`</span></span>
+<span id="cb165-583"><a href="#cb165-583"></a></span>
+<span id="cb165-584"><a href="#cb165-584"></a>Include <span class="in">`if else`</span> statements within a function to ensure that you are passing the right type of input to a function. You can create you own custom error message with <span class="in">`stop()`</span>.</span>
+<span id="cb165-585"><a href="#cb165-585"></a></span>
+<span id="cb165-588"><a href="#cb165-588"></a><span class="in">```{r}</span></span>
+<span id="cb165-589"><a href="#cb165-589"></a><span class="co">#| error: true</span></span>
+<span id="cb165-590"><a href="#cb165-590"></a></span>
+<span id="cb165-591"><a href="#cb165-591"></a>My_own_sum <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb165-592"><a href="#cb165-592"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.numeric</span>(x)){</span>
+<span id="cb165-593"><a href="#cb165-593"></a>    <span class="fu">stop</span>(<span class="st">"Input must be numeric"</span>)</span>
+<span id="cb165-594"><a href="#cb165-594"></a>  }</span>
+<span id="cb165-595"><a href="#cb165-595"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(x))</span>
+<span id="cb165-596"><a href="#cb165-596"></a>}</span>
+<span id="cb165-597"><a href="#cb165-597"></a></span>
+<span id="cb165-598"><a href="#cb165-598"></a>results <span class="ot">&lt;-</span> <span class="fu">My_own_sum</span>(<span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>))</span>
+<span id="cb165-599"><a href="#cb165-599"></a><span class="fu">class</span>(results)</span>
+<span id="cb165-600"><a href="#cb165-600"></a></span>
+<span id="cb165-601"><a href="#cb165-601"></a>results <span class="ot">&lt;-</span> <span class="fu">try</span>(<span class="fu">My_own_sum</span>(<span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>)), <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb165-602"><a href="#cb165-602"></a><span class="fu">class</span>(results)</span>
+<span id="cb165-603"><a href="#cb165-603"></a></span>
+<span id="cb165-604"><a href="#cb165-604"></a><span class="in">```</span></span>
+<span id="cb165-605"><a href="#cb165-605"></a></span>
+<span id="cb165-606"><a href="#cb165-606"></a></span>
+<span id="cb165-607"><a href="#cb165-607"></a><span class="fu">## Done!</span></span>
+<span id="cb165-608"><a href="#cb165-608"></a></span>
+<span id="cb165-609"><a href="#cb165-609"></a><span class="ss">- </span>Check the ICA Instructions for how to (a) push your code to GitHub and (b) update your portfolio website</span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+
+<div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

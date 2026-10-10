@@ -274,6 +274,11 @@ cookieconsent.run({
   <a href="../ica/09-functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">9 Functions</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ica/10-base-r.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10 Base R</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -520,8 +525,8 @@ cookieconsent.run({
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="fu">str_view</span>(string1, <span class="at">html =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div class="str_view html-widget html-fill-item" id="htmlwidget-f5aa6aa23e0ee13e0c8b" style="width:960px;height:100%;"></div>
-<script type="application/json" data-for="htmlwidget-f5aa6aa23e0ee13e0c8b">{"x":{"html":"<ul>\n  <li><pre>Record temp:<span class='special'>\t<\/span>102<\/pre><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div class="str_view html-widget html-fill-item" id="htmlwidget-0f02f4cec96765a1a5eb" style="width:960px;height:100%;"></div>
+<script type="application/json" data-for="htmlwidget-0f02f4cec96765a1a5eb">{"x":{"html":"<ul>\n  <li><pre>Record temp:<span class='special'>\t<\/span>102<\/pre><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section><section id="combine" class="level3"><h3 class="anchored" data-anchor-id="combine">Combine</h3>
@@ -701,32 +706,32 @@ cookieconsent.run({
 <span id="cb66-2"><a href="#cb66-2"></a><span class="fu">data</span>(fruit)</span>
 <span id="cb66-3"><a href="#cb66-3"></a><span class="fu">sample</span>(fruit, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stdout">
-<pre><code> [1] "damson"      "lemon"       "tamarillo"   "quince"      "pear"       
- [6] "banana"      "elderberry"  "feijoa"      "boysenberry" "kiwi fruit" </code></pre>
+<pre><code> [1] "quince"       "canary melon" "apricot"      "ugli fruit"   "nut"         
+ [6] "fig"          "eggplant"     "star fruit"   "blackberry"   "mulberry"    </code></pre>
 </div>
 </div>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a><span class="fu">data</span>(words)</span>
 <span id="cb68-2"><a href="#cb68-2"></a><span class="fu">sample</span>(words, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stdout">
-<pre><code> [1] "engine"      "decision"    "claim"       "item"        "original"   
- [6] "opportunity" "act"         "feel"        "evidence"    "responsible"</code></pre>
+<pre><code> [1] "attend"  "sleep"   "usual"   "cook"    "fit"     "name"    "often"  
+ [8] "wide"    "equal"   "through"</code></pre>
 </div>
 </div>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a><span class="fu">data</span>(sentences)</span>
 <span id="cb70-2"><a href="#cb70-2"></a><span class="fu">sample</span>(sentences, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stdout">
-<pre><code> [1] "The fruit of a fig tree is apple shaped."  
- [2] "The cold drizzle will halt the bond drive."
- [3] "The young girl gave no clear response."    
- [4] "The bloom of the rose lasts a few days."   
- [5] "Cut the pie into large parts."             
- [6] "The fly made its way along the wall."      
- [7] "The dune rose from the edge of the water." 
- [8] "Crouch before you jump or miss the mark."  
- [9] "A break in the dam almost caused a flood." 
-[10] "Three for a dime, the young peddler cried."</code></pre>
+<pre><code> [1] "She has a smart way of wearing clothes."          
+ [2] "Coax a young calf to drink from a bucket."        
+ [3] "Tea served from the brown jug is tasty."          
+ [4] "The store was jammed before the sale could start."
+ [5] "The bombs left most of the town in ruins."        
+ [6] "Add salt before you fry the egg."                 
+ [7] "The small pup gnawed a hole in the sock."         
+ [8] "Small children came to see him."                  
+ [9] "Hoist the load to your left shoulder."            
+[10] "Bathe and relax in the cool green grass."         </code></pre>
 </div>
 </div>
 <p>We can use <code>str_view()</code> with the <code>pattern</code> argument to see what parts of a string match the regex supplied in the <code>pattern</code> argument. (Matches are enclosed in <code>&lt;&gt;</code>.)</p>
