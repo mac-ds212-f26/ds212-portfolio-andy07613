@@ -276,6 +276,11 @@ cookieconsent.run({
   <a href="../ica/10-base-r.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10 Base R</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ica/11-iteration-1.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">11 Loops+Iter I</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -659,17 +664,67 @@ $ greenAreaPerCapitaM2                      &lt;dbl&gt; 7.784019, 7.803632, 8.16
 </div>
 </div>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="fu">ggplot</span>(extreme_cities,<span class="fu">aes</span>(<span class="at">x =</span> change, <span class="at">y =</span> <span class="fu">fct_reorder</span>(city_label, change), <span class="at">fill =</span> direction)) <span class="sc">+</span></span>
-<span id="cb42-2"><a href="#cb42-2"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb42-3"><a href="#cb42-3"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb42-4"><a href="#cb42-4"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%+.1f"</span>, change)), <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.2</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb42-5"><a href="#cb42-5"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.15</span>))) <span class="sc">+</span></span>
-<span id="cb42-6"><a href="#cb42-6"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Largest losses far exceeded the largest gains"</span>,</span>
-<span id="cb42-7"><a href="#cb42-7"></a>    <span class="at">subtitle =</span> <span class="st">"Five largest increases and decreases in urban green-area share, 1990–2020"</span>,</span>
-<span id="cb42-8"><a href="#cb42-8"></a>    <span class="at">x =</span> <span class="st">"Change in green-area share (percentage points)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb42-9"><a href="#cb42-9"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb42-10"><a href="#cb42-10"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>) <span class="sc">+</span></span>
-<span id="cb42-11"><a href="#cb42-11"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Graphic by Andy Zhu | Source: TidyTuesday (2026-09-22)."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>extreme_cities_plot <span class="ot">&lt;-</span> extreme_cities <span class="sc">%&gt;%</span></span>
+<span id="cb42-2"><a href="#cb42-2"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb42-3"><a href="#cb42-3"></a>    <span class="at">city_country =</span> <span class="fu">case_when</span>(</span>
+<span id="cb42-4"><a href="#cb42-4"></a>      <span class="fu">grepl</span>(<span class="st">"Stoke-on-Trent"</span>, city_label) <span class="sc">~</span> <span class="st">"Stoke-on-Trent, UK"</span>,</span>
+<span id="cb42-5"><a href="#cb42-5"></a>      <span class="fu">grepl</span>(<span class="st">"Zenica"</span>, city_label) <span class="sc">~</span> <span class="st">"Zenica, Bosnia and Herzegovina"</span>,</span>
+<span id="cb42-6"><a href="#cb42-6"></a>      <span class="fu">grepl</span>(<span class="st">"Winston-Salem"</span>, city_label) <span class="sc">~</span> <span class="st">"Winston-Salem, USA"</span>,</span>
+<span id="cb42-7"><a href="#cb42-7"></a>      <span class="fu">grepl</span>(<span class="st">"Bayamo"</span>, city_label) <span class="sc">~</span> <span class="st">"Bayamo, Cuba"</span>,</span>
+<span id="cb42-8"><a href="#cb42-8"></a>      <span class="fu">grepl</span>(<span class="st">"Lisboa"</span>, city_label) <span class="sc">~</span> <span class="st">"Lisbon, Portugal"</span>,</span>
+<span id="cb42-9"><a href="#cb42-9"></a>      <span class="fu">grepl</span>(<span class="st">"Bunia"</span>, city_label) <span class="sc">~</span> <span class="st">"Bunia, DR Congo"</span>,</span>
+<span id="cb42-10"><a href="#cb42-10"></a>      <span class="fu">grepl</span>(<span class="st">"Butembo"</span>, city_label) <span class="sc">~</span> <span class="st">"Butembo, DR Congo"</span>,</span>
+<span id="cb42-11"><a href="#cb42-11"></a>      <span class="fu">grepl</span>(<span class="st">"Bissau"</span>, city_label) <span class="sc">~</span> <span class="st">"Bissau, Guinea-Bissau"</span>,</span>
+<span id="cb42-12"><a href="#cb42-12"></a>      <span class="fu">grepl</span>(<span class="st">"^Bo$"</span>, city_label) <span class="sc">~</span> <span class="st">"Bo, Sierra Leone"</span>,</span>
+<span id="cb42-13"><a href="#cb42-13"></a>      <span class="fu">grepl</span>(<span class="st">"Kenema"</span>, city_label) <span class="sc">~</span> <span class="st">"Kenema, Sierra Leone"</span>,</span>
+<span id="cb42-14"><a href="#cb42-14"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.character</span>(city_label)</span>
+<span id="cb42-15"><a href="#cb42-15"></a>    )</span>
+<span id="cb42-16"><a href="#cb42-16"></a>  )</span>
+<span id="cb42-17"><a href="#cb42-17"></a></span>
+<span id="cb42-18"><a href="#cb42-18"></a><span class="fu">ggplot</span>(extreme_cities_plot,</span>
+<span id="cb42-19"><a href="#cb42-19"></a>       <span class="fu">aes</span>(<span class="at">x =</span> change,</span>
+<span id="cb42-20"><a href="#cb42-20"></a>           <span class="at">y =</span> <span class="fu">fct_reorder</span>(city_country, change),</span>
+<span id="cb42-21"><a href="#cb42-21"></a>           <span class="at">fill =</span> direction)) <span class="sc">+</span></span>
+<span id="cb42-22"><a href="#cb42-22"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb42-23"><a href="#cb42-23"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"grey40"</span>, <span class="at">linewidth =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb42-24"><a href="#cb42-24"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb42-25"><a href="#cb42-25"></a>    <span class="fu">aes</span>(</span>
+<span id="cb42-26"><a href="#cb42-26"></a>      <span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%+.1f%%"</span>, change),</span>
+<span id="cb42-27"><a href="#cb42-27"></a>      <span class="at">hjust =</span> <span class="fu">ifelse</span>(change <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="fl">1.1</span>, <span class="sc">-</span><span class="fl">0.1</span>)</span>
+<span id="cb42-28"><a href="#cb42-28"></a>    ),</span>
+<span id="cb42-29"><a href="#cb42-29"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb42-30"><a href="#cb42-30"></a>  ) <span class="sc">+</span></span>
+<span id="cb42-31"><a href="#cb42-31"></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb42-32"><a href="#cb42-32"></a>    <span class="at">breaks =</span> <span class="dv">0</span>,</span>
+<span id="cb42-33"><a href="#cb42-33"></a>    <span class="at">labels =</span> <span class="st">"0%"</span>,</span>
+<span id="cb42-34"><a href="#cb42-34"></a>    <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="fl">0.18</span>, <span class="fl">0.18</span>))</span>
+<span id="cb42-35"><a href="#cb42-35"></a>  ) <span class="sc">+</span></span>
+<span id="cb42-36"><a href="#cb42-36"></a>  <span class="fu">labs</span>(</span>
+<span id="cb42-37"><a href="#cb42-37"></a>    <span class="at">title =</span> <span class="st">"Five largest increases and decreases in urban green-area share, 1990–2020"</span>,</span>
+<span id="cb42-38"><a href="#cb42-38"></a>    <span class="at">subtitle =</span> <span class="st">"Largest losses reached 63.4 percentage points, far exceeding the biggest gain of 17.8 points"</span>,</span>
+<span id="cb42-39"><a href="#cb42-39"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb42-40"><a href="#cb42-40"></a>    <span class="at">y =</span> <span class="cn">NULL</span>,</span>
+<span id="cb42-41"><a href="#cb42-41"></a>    <span class="at">fill =</span> <span class="cn">NULL</span>,</span>
+<span id="cb42-42"><a href="#cb42-42"></a>    <span class="at">caption =</span> <span class="st">"Graphic by Andy Zhu | Data source: UN-Habitat Urban Indicators Database, via TidyTuesday (2026-09-22).</span><span class="sc">\n</span><span class="st">Note: Values represent percentage-point changes."</span></span>
+<span id="cb42-43"><a href="#cb42-43"></a>  ) <span class="sc">+</span></span>
+<span id="cb42-44"><a href="#cb42-44"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb42-45"><a href="#cb42-45"></a>  <span class="fu">theme</span>(</span>
+<span id="cb42-46"><a href="#cb42-46"></a>    <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb42-47"><a href="#cb42-47"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb42-48"><a href="#cb42-48"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb42-49"><a href="#cb42-49"></a>    <span class="at">plot.title.position =</span> <span class="st">"plot"</span>,</span>
+<span id="cb42-50"><a href="#cb42-50"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb42-51"><a href="#cb42-51"></a>      <span class="at">hjust =</span> <span class="dv">0</span>,</span>
+<span id="cb42-52"><a href="#cb42-52"></a>      <span class="at">face =</span> <span class="st">"bold"</span>,</span>
+<span id="cb42-53"><a href="#cb42-53"></a>      <span class="at">size =</span> <span class="dv">12</span></span>
+<span id="cb42-54"><a href="#cb42-54"></a>    ),</span>
+<span id="cb42-55"><a href="#cb42-55"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>),</span>
+<span id="cb42-56"><a href="#cb42-56"></a>    <span class="at">plot.caption.position =</span> <span class="st">"plot"</span>,</span>
+<span id="cb42-57"><a href="#cb42-57"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(</span>
+<span id="cb42-58"><a href="#cb42-58"></a>      <span class="at">hjust =</span> <span class="dv">0</span>,</span>
+<span id="cb42-59"><a href="#cb42-59"></a>      <span class="at">size =</span> <span class="dv">8</span></span>
+<span id="cb42-60"><a href="#cb42-60"></a>    )</span>
+<span id="cb42-61"><a href="#cb42-61"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="hw03-tt_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1453,23 +1508,73 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb43-167"><a href="#cb43-167"></a>extreme_cities</span>
 <span id="cb43-168"><a href="#cb43-168"></a><span class="in">```</span></span>
 <span id="cb43-171"><a href="#cb43-171"></a><span class="in">```{r}</span></span>
-<span id="cb43-172"><a href="#cb43-172"></a><span class="fu">ggplot</span>(extreme_cities,<span class="fu">aes</span>(<span class="at">x =</span> change, <span class="at">y =</span> <span class="fu">fct_reorder</span>(city_label, change), <span class="at">fill =</span> direction)) <span class="sc">+</span></span>
-<span id="cb43-173"><a href="#cb43-173"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb43-174"><a href="#cb43-174"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb43-175"><a href="#cb43-175"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%+.1f"</span>, change)), <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.2</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb43-176"><a href="#cb43-176"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.15</span>))) <span class="sc">+</span></span>
-<span id="cb43-177"><a href="#cb43-177"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Largest losses far exceeded the largest gains"</span>,</span>
-<span id="cb43-178"><a href="#cb43-178"></a>    <span class="at">subtitle =</span> <span class="st">"Five largest increases and decreases in urban green-area share, 1990–2020"</span>,</span>
-<span id="cb43-179"><a href="#cb43-179"></a>    <span class="at">x =</span> <span class="st">"Change in green-area share (percentage points)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb43-180"><a href="#cb43-180"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb43-181"><a href="#cb43-181"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>) <span class="sc">+</span></span>
-<span id="cb43-182"><a href="#cb43-182"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Graphic by Andy Zhu | Source: TidyTuesday (2026-09-22)."</span>)</span>
-<span id="cb43-183"><a href="#cb43-183"></a><span class="in">```</span></span>
-<span id="cb43-184"><a href="#cb43-184"></a>The cities with the largest losses experienced much greater changes than those with the largest gains. Kenema and Bo in Sierra Leone lost about 63.4 and 60.8 percentage points of green-area share, respectively, while the largest increase was about 17.8 percentage points in Stoke-on-Trent. The largest decrease were concentrated in Sierra Leone and the Democratic Republic of the Congo, whereas the cities with the largest gains were spread across countries. These extreme cases explained the long negative tail seen in the overall distribution and show that the decline in green-area share was especially severe for a relatively small number of cities.</span>
-<span id="cb43-185"><a href="#cb43-185"></a></span>
-<span id="cb43-186"><a href="#cb43-186"></a><span class="fu">## Conclusion</span></span>
-<span id="cb43-187"><a href="#cb43-187"></a></span>
-<span id="cb43-188"><a href="#cb43-188"></a>Overall, urban green-area share declined more often than it increased between 1990 and 2020. However, the changes were not evenly distributed either in regions or individual cities. Some regions had typical changes close to zero, while others showed larger declines, and a small number of cities experienced very large losses. Together, these results suggest that the overall downward pattern is driven by a combination of widespread moderate declines and much more severe losses in certain cities.</span>
+<span id="cb43-172"><a href="#cb43-172"></a>extreme_cities_plot <span class="ot">&lt;-</span> extreme_cities <span class="sc">%&gt;%</span></span>
+<span id="cb43-173"><a href="#cb43-173"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb43-174"><a href="#cb43-174"></a>    <span class="at">city_country =</span> <span class="fu">case_when</span>(</span>
+<span id="cb43-175"><a href="#cb43-175"></a>      <span class="fu">grepl</span>(<span class="st">"Stoke-on-Trent"</span>, city_label) <span class="sc">~</span> <span class="st">"Stoke-on-Trent, UK"</span>,</span>
+<span id="cb43-176"><a href="#cb43-176"></a>      <span class="fu">grepl</span>(<span class="st">"Zenica"</span>, city_label) <span class="sc">~</span> <span class="st">"Zenica, Bosnia and Herzegovina"</span>,</span>
+<span id="cb43-177"><a href="#cb43-177"></a>      <span class="fu">grepl</span>(<span class="st">"Winston-Salem"</span>, city_label) <span class="sc">~</span> <span class="st">"Winston-Salem, USA"</span>,</span>
+<span id="cb43-178"><a href="#cb43-178"></a>      <span class="fu">grepl</span>(<span class="st">"Bayamo"</span>, city_label) <span class="sc">~</span> <span class="st">"Bayamo, Cuba"</span>,</span>
+<span id="cb43-179"><a href="#cb43-179"></a>      <span class="fu">grepl</span>(<span class="st">"Lisboa"</span>, city_label) <span class="sc">~</span> <span class="st">"Lisbon, Portugal"</span>,</span>
+<span id="cb43-180"><a href="#cb43-180"></a>      <span class="fu">grepl</span>(<span class="st">"Bunia"</span>, city_label) <span class="sc">~</span> <span class="st">"Bunia, DR Congo"</span>,</span>
+<span id="cb43-181"><a href="#cb43-181"></a>      <span class="fu">grepl</span>(<span class="st">"Butembo"</span>, city_label) <span class="sc">~</span> <span class="st">"Butembo, DR Congo"</span>,</span>
+<span id="cb43-182"><a href="#cb43-182"></a>      <span class="fu">grepl</span>(<span class="st">"Bissau"</span>, city_label) <span class="sc">~</span> <span class="st">"Bissau, Guinea-Bissau"</span>,</span>
+<span id="cb43-183"><a href="#cb43-183"></a>      <span class="fu">grepl</span>(<span class="st">"^Bo$"</span>, city_label) <span class="sc">~</span> <span class="st">"Bo, Sierra Leone"</span>,</span>
+<span id="cb43-184"><a href="#cb43-184"></a>      <span class="fu">grepl</span>(<span class="st">"Kenema"</span>, city_label) <span class="sc">~</span> <span class="st">"Kenema, Sierra Leone"</span>,</span>
+<span id="cb43-185"><a href="#cb43-185"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.character</span>(city_label)</span>
+<span id="cb43-186"><a href="#cb43-186"></a>    )</span>
+<span id="cb43-187"><a href="#cb43-187"></a>  )</span>
+<span id="cb43-188"><a href="#cb43-188"></a></span>
+<span id="cb43-189"><a href="#cb43-189"></a><span class="fu">ggplot</span>(extreme_cities_plot,</span>
+<span id="cb43-190"><a href="#cb43-190"></a>       <span class="fu">aes</span>(<span class="at">x =</span> change,</span>
+<span id="cb43-191"><a href="#cb43-191"></a>           <span class="at">y =</span> <span class="fu">fct_reorder</span>(city_country, change),</span>
+<span id="cb43-192"><a href="#cb43-192"></a>           <span class="at">fill =</span> direction)) <span class="sc">+</span></span>
+<span id="cb43-193"><a href="#cb43-193"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb43-194"><a href="#cb43-194"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"grey40"</span>, <span class="at">linewidth =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb43-195"><a href="#cb43-195"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb43-196"><a href="#cb43-196"></a>    <span class="fu">aes</span>(</span>
+<span id="cb43-197"><a href="#cb43-197"></a>      <span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%+.1f%%"</span>, change),</span>
+<span id="cb43-198"><a href="#cb43-198"></a>      <span class="at">hjust =</span> <span class="fu">ifelse</span>(change <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="fl">1.1</span>, <span class="sc">-</span><span class="fl">0.1</span>)</span>
+<span id="cb43-199"><a href="#cb43-199"></a>    ),</span>
+<span id="cb43-200"><a href="#cb43-200"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb43-201"><a href="#cb43-201"></a>  ) <span class="sc">+</span></span>
+<span id="cb43-202"><a href="#cb43-202"></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb43-203"><a href="#cb43-203"></a>    <span class="at">breaks =</span> <span class="dv">0</span>,</span>
+<span id="cb43-204"><a href="#cb43-204"></a>    <span class="at">labels =</span> <span class="st">"0%"</span>,</span>
+<span id="cb43-205"><a href="#cb43-205"></a>    <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="fl">0.18</span>, <span class="fl">0.18</span>))</span>
+<span id="cb43-206"><a href="#cb43-206"></a>  ) <span class="sc">+</span></span>
+<span id="cb43-207"><a href="#cb43-207"></a>  <span class="fu">labs</span>(</span>
+<span id="cb43-208"><a href="#cb43-208"></a>    <span class="at">title =</span> <span class="st">"Five largest increases and decreases in urban green-area share, 1990–2020"</span>,</span>
+<span id="cb43-209"><a href="#cb43-209"></a>    <span class="at">subtitle =</span> <span class="st">"Largest losses reached 63.4 percentage points, far exceeding the biggest gain of 17.8 points"</span>,</span>
+<span id="cb43-210"><a href="#cb43-210"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb43-211"><a href="#cb43-211"></a>    <span class="at">y =</span> <span class="cn">NULL</span>,</span>
+<span id="cb43-212"><a href="#cb43-212"></a>    <span class="at">fill =</span> <span class="cn">NULL</span>,</span>
+<span id="cb43-213"><a href="#cb43-213"></a>    <span class="at">caption =</span> <span class="st">"Graphic by Andy Zhu | Data source: UN-Habitat Urban Indicators Database, via TidyTuesday (2026-09-22).</span><span class="sc">\n</span><span class="st">Note: Values represent percentage-point changes."</span></span>
+<span id="cb43-214"><a href="#cb43-214"></a>  ) <span class="sc">+</span></span>
+<span id="cb43-215"><a href="#cb43-215"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb43-216"><a href="#cb43-216"></a>  <span class="fu">theme</span>(</span>
+<span id="cb43-217"><a href="#cb43-217"></a>    <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb43-218"><a href="#cb43-218"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb43-219"><a href="#cb43-219"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb43-220"><a href="#cb43-220"></a>    <span class="at">plot.title.position =</span> <span class="st">"plot"</span>,</span>
+<span id="cb43-221"><a href="#cb43-221"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb43-222"><a href="#cb43-222"></a>      <span class="at">hjust =</span> <span class="dv">0</span>,</span>
+<span id="cb43-223"><a href="#cb43-223"></a>      <span class="at">face =</span> <span class="st">"bold"</span>,</span>
+<span id="cb43-224"><a href="#cb43-224"></a>      <span class="at">size =</span> <span class="dv">12</span></span>
+<span id="cb43-225"><a href="#cb43-225"></a>    ),</span>
+<span id="cb43-226"><a href="#cb43-226"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>),</span>
+<span id="cb43-227"><a href="#cb43-227"></a>    <span class="at">plot.caption.position =</span> <span class="st">"plot"</span>,</span>
+<span id="cb43-228"><a href="#cb43-228"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(</span>
+<span id="cb43-229"><a href="#cb43-229"></a>      <span class="at">hjust =</span> <span class="dv">0</span>,</span>
+<span id="cb43-230"><a href="#cb43-230"></a>      <span class="at">size =</span> <span class="dv">8</span></span>
+<span id="cb43-231"><a href="#cb43-231"></a>    )</span>
+<span id="cb43-232"><a href="#cb43-232"></a>  )</span>
+<span id="cb43-233"><a href="#cb43-233"></a><span class="in">```</span></span>
+<span id="cb43-234"><a href="#cb43-234"></a>The cities with the largest losses experienced much greater changes than those with the largest gains. Kenema and Bo in Sierra Leone lost about 63.4 and 60.8 percentage points of green-area share, respectively, while the largest increase was about 17.8 percentage points in Stoke-on-Trent. The largest decrease were concentrated in Sierra Leone and the Democratic Republic of the Congo, whereas the cities with the largest gains were spread across countries. These extreme cases explained the long negative tail seen in the overall distribution and show that the decline in green-area share was especially severe for a relatively small number of cities.</span>
+<span id="cb43-235"><a href="#cb43-235"></a></span>
+<span id="cb43-236"><a href="#cb43-236"></a><span class="fu">## Conclusion</span></span>
+<span id="cb43-237"><a href="#cb43-237"></a></span>
+<span id="cb43-238"><a href="#cb43-238"></a>Overall, urban green-area share declined more often than it increased between 1990 and 2020. However, the changes were not evenly distributed either in regions or individual cities. Some regions had typical changes close to zero, while others showed larger declines, and a small number of cities experienced very large losses. Together, these results suggest that the overall downward pattern is driven by a combination of widespread moderate declines and much more severe losses in certain cities.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
