@@ -1,0 +1,96 @@
+---
+title: "Homework 04"
+---
+
+
+## TidyTuesday Part (Optional)
+
+::: {.callout-important title="Instructions"}
+You can count work on this week's TidyTuesday toward the exceptional work.
+:::
+
+Explore the week's [TidyTuesday](https://github.com/rfordatascience/tidytuesday) challenge. Develop a research question, then answer it through a short data story mainly composed of [effective visualizations](https://docs.google.com/presentation/d/1Q-C0sFxYGQvkxb6PU6OM_YOv6Nilalpk-IWb362PoRc/preview?slide=id.g13360dab5d5_0_61#slide=id.g13360dab5d5_0_61).  Provide sufficient background for readers to grasp your narrative.  Refer to the Homework Instructions ⭐ page on the course website for details on how to submit this part.
+
+Background introduction:
+Avocado oil is increasingly used in processed foods such as chips, mayonnaise, and salad dressings because of its perceived health benefits. However, some products may contain oils that do not match their labels. Using the 2026 TidyTuesday Avocado Oil Authenticity dataset, this project compares authenticity-test failure rates between avocado-oil and olive-oil products across different food categories.
+
+Research topic: How do the failure rates for authenticity testing differ between avocado oil products and olive oil products across different food categories?
+
+```{r}
+library(tidyverse)
+library(scales)
+
+foods <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-10-06/avocado_oil_processed_foods.csv")
+
+glimpse(foods)
+```
+
+
+```{r}
+failure_summary <- foods %>%
+  group_by(category, oil_type) %>%
+  summarise(total = n(), failed = sum(authentic == FALSE), failure_rate = failed / total * 100, .groups = "drop") %>%
+  arrange(category, oil_type)
+failure_summary
+```
+
+The chart below compares authenticity-test failure rates between avocado-oil and olive-oil products across three food categories.
+
+```{r}
+ggplot(failure_summary, aes(x = category, y = failure_rate, fill = oil_type)) +
+  geom_col(position = position_dodge(width = 0.75), width = 0.65) +
+  geom_text(aes(label = paste0(round(failure_rate, 1), "%")), position = position_dodge(width = 0.75), hjust = -0.15, size = 4) +
+  coord_flip() +
+  scale_fill_manual(values = c("avocado" = "#F27068", "olive" = "#00BFC4"),
+    labels = c("avocado" = "Avocado oil", "olive" = "Olive oil")) +
+  scale_x_discrete(labels = c("chips" = "Chips", "mayonnaise" = "Mayonnaise", "salad_dressing" = "Salad dressing")) +
+  scale_y_continuous(limits = c(0, 120), breaks = c(0, 25, 50, 75, 100), labels = function(x) paste0(x, "%")) +
+  labs(title = "Avocado-oil products fail authenticity tests more often", 
+       subtitle = "Failure rates by oil type and food category",
+       x = NULL, y = "Authenticity-test failure rate", fill = NULL,
+    caption = "Source: TidyTuesday (2026-10-06), UC Davis study\nNote: Percentages represent tested product lots.") +
+  theme_minimal(base_size = 13) +
+  theme(plot.title = element_text(face = "bold", size = 16), plot.subtitle = element_text(size = 12), 
+        legend.position = "top", panel.grid.major.y = element_blank(), panel.grid.minor = element_blank(),
+        plot.caption = element_text(hjust = 0, size = 9, color = "gray40"))
+```
+Avocado-oil products had much higher authenticity-test failure rates than olive-oil products across all three food categories. Salad dressings had the highest failure rate for avocado oil (100%), followed by chips (92.9%) and mayonnaise (71.4%). In contrast, olive-oil products had failure rates of 0% to 10% in this dataset.
+
+
+```{r}
+lot_summary <- foods %>%
+  group_by(product_id, oil_type) %>%
+  summarise(failed_lots = sum(authentic == FALSE), .groups = "drop") %>%
+  mutate(lot_status = case_when(failed_lots == 2 ~ "Both lots failed", failed_lots == 1 ~ "One lot failed", TRUE ~ "Neither lot failed")) %>%
+  count(oil_type, lot_status, name = "products") %>%
+  group_by(oil_type) %>%
+  mutate(share = products / sum(products)) %>%
+  ungroup()
+
+lot_summary
+```
+
+```{r}
+ggplot(lot_summary,
+       aes(x = oil_type, y = share, fill = lot_status)) +
+  geom_col(width = 0.55) +
+  geom_text(aes(label = ifelse(share >= 0.08, paste0("n=", products), "")), position = position_stack(vjust = 0.5), size = 4) +
+  coord_flip() +
+  scale_fill_manual(values = c("Both lots failed" = "#F27068", "One lot failed" = "#DEA64A", "Neither lot failed" = "#00BFC4")) +
+  scale_x_discrete(labels = c("avocado" = "Avocado oil", "olive" = "Olive oil")) +
+  scale_y_continuous(labels = scales::percent_format(),limits = c(0, 1)) +
+  labs(title = "Most avocado-oil products failed in both tested lots",
+    subtitle = "Authenticity results across two lots of each product",
+    x = NULL, y = "Share of products", fill = "Test result",
+    caption = "Source: TidyTuesday (2026-10-06), UC Davis study\nNote: 37 products, each tested in two lots.") +
+  theme_minimal(base_size = 13) +
+  theme(plot.title = element_text(face = "bold", size = 15), legend.position = "top", panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(), plot.caption = element_text(hjust = 0, size = 9, color = "gray40"))
+```
+
+Among 27 avocado-oil products, 23 (85.2%) failed authenticity testing in both lots. In contrast, 9 out of 10 olive-oil products passed both tests. This suggests that authenticity issues were more consistent across batches of avocado-oil products.
+This analysis shows that avocado oil products had substantially higher authenticity test failure rates than olive oil products across all three food categories. Most avocado oil products also failed in both tested lots, shows that these issues may persist across batches. These findings emphasize the importance of accurate ingredient labeling and stronger quality control in processed foods.
+
+
+
+
