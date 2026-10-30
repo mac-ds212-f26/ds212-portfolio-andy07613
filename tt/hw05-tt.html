@@ -286,6 +286,11 @@ cookieconsent.run({
   <a href="../ica/12-iteration-2.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">12 Iteration II</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ica/14-apis-2.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">14 APIs II</span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -541,8 +546,8 @@ $ n_graduates            &lt;dbl&gt; 206, 1798, 24, 25, 632, 20, 187, 3905, 155,
 <span id="cb17-4"><a href="#cb17-4"></a>  <span class="fu">facet_grid</span>(exposure_group <span class="sc">~</span> ., <span class="at">scales =</span> <span class="st">"free_y"</span>, <span class="at">space =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
 <span id="cb17-5"><a href="#cb17-5"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Five least exposed"</span> <span class="ot">=</span> <span class="st">"darkblue"</span>, <span class="st">"Five most exposed"</span> <span class="ot">=</span> <span class="st">"orange"</span>)) <span class="sc">+</span></span>
 <span id="cb17-6"><a href="#cb17-6"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_dollar</span>(), <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.22</span>))) <span class="sc">+</span></span>
-<span id="cb17-7"><a href="#cb17-7"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Low AI exposure does not guarantee high starting pay"</span>,</span>
-<span id="cb17-8"><a href="#cb17-8"></a>    <span class="at">subtitle =</span> <span class="st">"Starting salaries for the five least and five most AI-exposed majors"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Starting salaries for the five least and five most AI-exposed majors"</span>,</span>
+<span id="cb17-8"><a href="#cb17-8"></a>    <span class="at">subtitle =</span> <span class="st">"Low AI exposure does not guarantee high starting pay"</span>,</span>
 <span id="cb17-9"><a href="#cb17-9"></a>    <span class="at">x =</span> <span class="st">"Median earnings one year after graduation (USD)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="cn">NULL</span>,</span>
 <span id="cb17-10"><a href="#cb17-10"></a>    <span class="at">caption =</span> <span class="st">"Graphic by Andy Zhu | Source: College Scorecard and AIOE, via TidyTuesday (2026-10-20).</span><span class="sc">\n</span><span class="st">Majors were selected by AI exposure, not by earnings; some salary estimates rely on relatively few institutions."</span>) <span class="sc">+</span></span>
 <span id="cb17-11"><a href="#cb17-11"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
@@ -1295,8 +1300,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb18-124"><a href="#cb18-124"></a>  <span class="fu">facet_grid</span>(exposure_group <span class="sc">~</span> ., <span class="at">scales =</span> <span class="st">"free_y"</span>, <span class="at">space =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
 <span id="cb18-125"><a href="#cb18-125"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Five least exposed"</span> <span class="ot">=</span> <span class="st">"darkblue"</span>, <span class="st">"Five most exposed"</span> <span class="ot">=</span> <span class="st">"orange"</span>)) <span class="sc">+</span></span>
 <span id="cb18-126"><a href="#cb18-126"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_dollar</span>(), <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.22</span>))) <span class="sc">+</span></span>
-<span id="cb18-127"><a href="#cb18-127"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Low AI exposure does not guarantee high starting pay"</span>,</span>
-<span id="cb18-128"><a href="#cb18-128"></a>    <span class="at">subtitle =</span> <span class="st">"Starting salaries for the five least and five most AI-exposed majors"</span>,</span>
+<span id="cb18-127"><a href="#cb18-127"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Starting salaries for the five least and five most AI-exposed majors"</span>,</span>
+<span id="cb18-128"><a href="#cb18-128"></a>    <span class="at">subtitle =</span> <span class="st">"Low AI exposure does not guarantee high starting pay"</span>,</span>
 <span id="cb18-129"><a href="#cb18-129"></a>    <span class="at">x =</span> <span class="st">"Median earnings one year after graduation (USD)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="cn">NULL</span>,</span>
 <span id="cb18-130"><a href="#cb18-130"></a>    <span class="at">caption =</span> <span class="st">"Graphic by Andy Zhu | Source: College Scorecard and AIOE, via TidyTuesday (2026-10-20).</span><span class="sc">\n</span><span class="st">Majors were selected by AI exposure, not by earnings; some salary estimates rely on relatively few institutions."</span>) <span class="sc">+</span></span>
 <span id="cb18-131"><a href="#cb18-131"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
