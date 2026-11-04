@@ -1,0 +1,49 @@
+---
+title: "Homework 01"
+---
+
+
+## TidyTuesday Part
+
+Explore the week's [TidyTuesday](https://github.com/rfordatascience/tidytuesday) challenge. Develop a research question, then answer it through a short data story mainly composed of [effective visualizations]({{< var effective-viz-url >}}).  Provide sufficient background for readers to grasp your narrative.  Refer to the Homework Instructions ⭐ page on the course website for details on how to submit this part.
+
+Research question:How does the composition of surviving Dead Sea Scroll manuscripts vary across the Qumran caves?
+
+The Dead Sea Scrolls are a collection of ancient Jewish manuscripts discovered in caves near Qumran, close to the Dead Sea. Because the manuscripts were found across multiple caves, comparing their number, content, and language can reveal how the surviving collection differs across locations.
+
+```{r}
+library(tidyverse)
+
+dead_sea_scrolls <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-09-15/dead_sea_scrolls.csv")
+
+qumran <- dead_sea_scrolls %>%
+  filter(!is.na(cave))
+
+qumran %>%
+  count(cave) %>%
+  ggplot(aes(x = factor(cave), y = n)) +
+  geom_col() +
+  geom_text(aes(label = n), vjust = -0.5) +
+  labs(x = "Qumran Cave", y = "Number of Manuscripts", title = "How Many Manuscripts Were Found in Each Qumran Cave?") +
+  theme_classic()
+```
+```{r}
+qumran %>%
+  filter(content_category != "Unidentified") %>%
+  ggplot(aes(x = factor(cave), fill = content_category )) +
+  geom_bar(position = "fill") +
+  labs(x = "Qumran Cave", y = "Proportion", fill = "Content Category", title = "The Mix of Text Types Differs Across Qumran Caves") +
+  theme_classic()
+```
+```{r}
+qumran %>%
+  filter(!is.na(language)) %>%
+  ggplot(aes(x = factor(cave), fill = language)) +
+  geom_bar(position = "fill") +
+  labs(x = "Qumran Cave", y = "Proportion", fill = "Language", title = "Language Composition Across Qumran Caves") +
+  theme_classic()
+```
+  The distribution of manuscripts across the various Qumran caves is uneven. Cave 4 contains a significantly larger number of manuscripts—541 in total—whereas the other caves hold far fewer. Treating all caves as equally representative would therefore introduce bias, masking the reality of this numerical imbalance.
+The types of manuscripts found in each cave also vary; some caves contain a high proportion of biblical texts, while others are dominated by non-biblical, liturgical, or para-biblical writings. Clearly, the differences between the caves extend beyond mere quantity.
+Linguistically, the manuscripts across the caves are largely similar. Hebrew predominates in most caves, indicating its status as the lingua franca of the time. However, the manuscripts from Cave 7 are exclusively in Greek, setting them apart entirely from those found elsewhere; this demonstrates that the linguistic profile of the manuscripts is not uniform across all locations.
+In summary, the differences among these cave manuscripts go beyond quantity. While Cave 4 holds the vast majority of the texts, the other caves exhibit distinct variations in language and content type. Nevertheless, we must exercise caution when drawing conclusions, as current analyses rely on extant manuscripts that have already been excavated and classified. Since the number of surviving manuscripts from most caves is very small, it is impossible to definitively infer the overall content or original purpose of the manuscript collections as a whole.

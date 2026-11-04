@@ -3,8 +3,12 @@ title: "Pre-Class Learning Summaries"
 ---
 
 ## R
+Mind Maps on Canva
 
+All of my pre-class learning mind maps are created and organized in Canva. They summarize key concepts from the assigned readings and course materials.
 ![](0808-r.png)
+View my mind maps on Canva: https://www.canva.com/design/DAHXhwyvGAQ/MkpZhEiDBBnM4c1DwybLXQ/edit
+
 
 ## Quarto
 
